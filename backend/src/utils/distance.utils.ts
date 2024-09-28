@@ -48,3 +48,29 @@ export function getSquare(
   };
   return square;
 }
+
+export function calculateBoundingBox(lat1, lon1, lat2, lon2, distance) {
+  const R = 6378000;
+
+  const distanceInRadians = distance / R;
+
+  const angle = Math.atan2(lat2 - lat1, lon2 - lon1);
+
+  const orthogonalAngle = angle + Math.PI / 2;
+
+  const latOffset = distanceInRadians * Math.cos(orthogonalAngle);
+  const lonOffset = distanceInRadians * Math.sin(orthogonalAngle) / Math.cos((lat1 + lat2) * Math.PI / 360);
+
+  const lat1Min = lat1 - latOffset * (180 / Math.PI);
+  const lon1Min = lon1 - lonOffset * (180 / Math.PI);
+
+  const lat2Max = lat2 + latOffset * (180 / Math.PI);
+  const lon2Max = lon2 + lonOffset * (180 / Math.PI);
+
+  const latMin = Math.min(lat1Min, lat2Max);
+  const lonMin = Math.min(lon1Min, lon2Max);
+  const latMax = Math.max(lat1Min, lat2Max);
+  const lonMax = Math.max(lon1Min, lon2Max);
+
+  return [latMin, lonMin, latMax, lonMax];
+}
