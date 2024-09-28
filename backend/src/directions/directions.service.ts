@@ -6,21 +6,26 @@ import { RoutingMode } from './entities/direction.entity';
 @Injectable()
 export class DirectionsService {
   constructor(private readonly httpService: HttpService) {}
-  
-  async findRoute(start: string, end: string, mode?: RoutingMode): Promise<Direction> {
 
-    let osmrUrl = process.env.DEFAULT_OSMR_URL
+  async findRoute(
+    start: string,
+    end: string,
+    mode?: RoutingMode,
+  ): Promise<Direction> {
+    let osrmUrl = process.env.DEFAULT_OSMR_URL;
 
     switch (mode) {
-      case "family":
-        osmrUrl = process.env.FAMILY_OSMR_URL
+      case 'family':
+        osrmUrl = process.env.FAMILY_OSMR_URL;
         break;
-      case "sport":
-        osmrUrl = process.env.SPORT_OSMR_URL
+      case 'sport':
+        osrmUrl = process.env.SPORT_OSMR_URL;
         break;
     }
 
-    const callUrl = `${osmrUrl}/route/v1/driving/${end};${start}`;
+    console.log(osrmUrl);
+
+    const callUrl = `${osrmUrl}/route/v1/driving/${start};${end}?overview=false&steps=true`;
 
     const osmrResp = await this.httpService.axiosRef.get(callUrl);
 
