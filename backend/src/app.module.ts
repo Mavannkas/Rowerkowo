@@ -7,6 +7,7 @@ import { UploadModule } from './upload/upload.module';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ScheduleModule } from '@nestjs/schedule';
+import { Co2Module } from './co2/co2.module';
 import { DirectionsModule } from './directions/directions.module';
 import { AccidentIndexerModule } from './accidentIndexer/accidentIndexer.module';
 
@@ -18,6 +19,7 @@ import { AccidentIndexerModule } from './accidentIndexer/accidentIndexer.module'
     UsersModule,
     UploadModule,
     ScheduleModule.forRoot(),
+    Co2Module,
     DirectionsModule,
     AccidentIndexerModule,
   ],

@@ -10,8 +10,12 @@ services:
     environment:
       - MONGOOSE_URL=mongodb://mongo:27017/mydb
       - PORT=3011
+      - DEFAULT_OSMR_URL=http://osmr:5000
+      - SPORT_OSMR_URL=http://osmr:5001
+      - FAMILY_OSMR_URL=http://osmr:5002
     depends_on:
       - mongo
+      - osmr
 
   mongo:
     image: mongo:7.0
@@ -21,6 +25,13 @@ services:
       - '27017:27017'
     volumes:
       - mongo-data:/data/db
+
+  osmr:
+    build: ./osmr
+    container_name: osmr_basic_bicycle
+    restart: always
+    ports:
+      - '5001:5000'
 
 volumes:
   mongo-data:
