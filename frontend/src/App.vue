@@ -14,6 +14,7 @@ import BaseNavbar from '@/components/BaseNavbar.vue'
 import { onMounted } from 'vue'
 import { initFlowbite } from 'flowbite'
 import { useAuthStore } from '@/stores/auth'
+import 'leaflet/dist/leaflet.css'
 
 const authStore = useAuthStore()
 
