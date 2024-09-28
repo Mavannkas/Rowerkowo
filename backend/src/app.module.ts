@@ -8,6 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ScheduleModule } from '@nestjs/schedule';
 import { DirectionsModule } from './directions/directions.module';
+import { AccidentIndexerModule } from './accidentIndexer/accidentIndexer.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { DirectionsModule } from './directions/directions.module';
     UploadModule,
     ScheduleModule.forRoot(),
     DirectionsModule,
+    AccidentIndexerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

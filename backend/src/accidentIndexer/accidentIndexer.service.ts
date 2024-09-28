@@ -2,23 +2,22 @@ import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
-import { Accident } from './entities/accident.entity';
+import { Accident, AccidentEntity } from './entities/accident.entity';
 import { AccidentApiResponseData, RawAccident } from './accidentIndexer.types';
 import { InjectModel } from '@nestjs/mongoose';
-import { UserEntity } from '../users/entities/user.entity';
 import { Model } from 'mongoose';
 
 @Injectable()
 export class AccidentIndexerService {
   constructor(
     private readonly httpService: HttpService,
-    @InjectModel(UserEntity.name) private userModel: Model<UserEntity>,
+    @InjectModel(AccidentEntity.name) private accidentEntityModel: Model<AccidentEntity>,
 ) {}
 
   @Cron(CronExpression.EVERY_HOUR)
   async indexAccidents() {
     const accidents = await this.getAccidentData();
-    await this.userModel.insertMany(accidents);
+    await this.accidentEntityModel.insertMany(accidents);
   }
 
   async getAccidentData(): Promise<Accident[]> {
