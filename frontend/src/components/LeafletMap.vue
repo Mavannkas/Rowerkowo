@@ -37,9 +37,14 @@ onMounted(() => {
   if (!props.coordinates.length) return
 
   const firstPoint = props.coordinates[0]
-  const lastPoint = props.coordinates[props.coordinates.length - 1]
-
   L.marker([firstPoint.lat, firstPoint.lng]).addTo(map)
+
+  const lastPoint = props.coordinates[props.coordinates.length - 1]
   L.marker([lastPoint.lat, lastPoint.lng]).addTo(map)
+
+  const latLngs: L.LatLngExpression[] = props.coordinates.map((point) => [point.lat, point.lng])
+  const polyline = L.polyline(latLngs, { color: '#3b82f6' }).addTo(map)
+
+  map.fitBounds(polyline.getBounds())
 })
 </script>
