@@ -1,0 +1,10 @@
+@import '/node_modules/flowbite-vue/dist/index.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
