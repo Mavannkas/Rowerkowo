@@ -1,17 +1,24 @@
 <template>
   <div class="relative">
     <label :for="id" class="mb-2 block text-sm font-medium text-gray-900">{{ label }}</label>
-    <input
-      :type
-      :name="id"
-      :id
-      class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-primary-600 focus:ring-primary-600"
-      :placeholder="placeholder"
-      @blur="handleBlur"
-      @focus="handleFocus"
-      :value="input"
-      v-model="input"
-    />
+    <div class="relative">
+      <input
+        :type
+        :name="id"
+        :id
+        class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-primary-600 focus:ring-primary-600"
+        :placeholder="placeholder"
+        @blur="handleBlur"
+        @focus="handleFocus"
+        :value="input"
+        v-model="input"
+      />
+      <IconGeolocation
+        v-if="geoInput"
+        @click="handleGeoEmit"
+        :class="isGeolocated ? 'text-primary-600' : ''"
+      />
+    </div>
     <ul
       v-if="inputVisible && results.length"
       class="absolute left-1/2 top-full z-10 w-full -translate-x-1/2 rounded-lg rounded-t-none border-2 border-t-0 border-gray-300 bg-white"
@@ -35,12 +42,16 @@ import type { SearchResult } from 'leaflet-geosearch/dist/providers/provider.js'
 import type { RawResult } from 'leaflet-geosearch/dist/providers/openStreetMapProvider.js'
 
 import { ref } from 'vue'
+import IconGeolocation from './IconGeolocation.vue'
+import { getGeolocationPermission } from '@/helpers/getGeolocationPermission'
+import { getCurrentGeolocation } from '@/helpers/getCurrentGeolocation'
 
 defineProps<{
   label: string
   type: string
   id: string
   placeholder: string
+  geoInput?: boolean
 }>()
 
 defineOptions({
@@ -50,6 +61,8 @@ defineOptions({
 const input = defineModel<string>({ default: '' })
 const inputVisible = ref<boolean>(false)
 const results = ref<SearchResult<RawResult>[]>([])
+const emit = defineEmits(['geolocation'])
+const isGeolocated = ref(false)
 
 watchDebounced(
   input,
@@ -63,13 +76,34 @@ watchDebounced(
   { debounce: 500 }
 )
 
+const handleGeoEmit = async () => {
+  isGeolocated.value = !isGeolocated.value
+  await getCurrentGeolocation()
+  if (!isGeolocated.value) {
+    const res = await getGeolocationPermission()
+    if (res === 'denied') {
+      isGeolocated.value = false
+      return
+    }
+    if (res === 'prompt') {
+      isGeolocated.value = false
+      return
+    }
+  }
+  input.value = isGeolocated.value ? 'Twoja lokalizacja' : ''
+  emit('geolocation', isGeolocated.value)
+}
+
 const handleBlur = () => {
   setTimeout(() => {
     inputVisible.value = false
-  }, 50)
+  }, 100)
 }
 const handleFocus = () => {
   inputVisible.value = true
+  input.value = isGeolocated.value ? '' : input.value
+  isGeolocated.value = false
+  emit('geolocation', isGeolocated.value)
 }
 
 const handleResultClick = (choosenLabel: string) => {

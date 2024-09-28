@@ -1,5 +1,5 @@
 <template>
-  <section class="bg-gray-50">
+  <section class="flex-1 bg-gray-50">
     <div class="mx-auto flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
       <a href="#" class="mb-6 flex items-center text-2xl font-semibold text-gray-900">
         <img
