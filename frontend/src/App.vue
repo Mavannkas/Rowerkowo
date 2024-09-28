@@ -1,23 +1,12 @@
 <template>
-  <header v-if="authStore.isLoggedIn">
-    <div class="min-h-full w-full bg-amber-50">
-      <BaseNavbar />
-    </div>
-  </header>
-
-  <RouterView />
+  <div class="flex h-dvh flex-col">
+    <RouterView />
+    <BaseBottomNavigation />
+  </div>
 </template>
 
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import BaseNavbar from '@/components/BaseNavbar.vue'
-import { onMounted } from 'vue'
-import { initFlowbite } from 'flowbite'
-import { useAuthStore } from '@/stores/auth'
-
-const authStore = useAuthStore()
-
-onMounted(() => {
-  initFlowbite()
-})
+import 'leaflet/dist/leaflet.css'
+import BaseBottomNavigation from './components/BaseBottomNavigation.vue'
 </script>

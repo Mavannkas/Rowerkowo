@@ -8,6 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Co2Module } from './co2/co2.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { DirectionsModule } from './directions/directions.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     UsersModule,
     UploadModule,
     Co2Module,
+    DirectionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
