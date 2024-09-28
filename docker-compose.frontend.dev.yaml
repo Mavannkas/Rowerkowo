@@ -6,9 +6,10 @@ services:
     container_name: node_app_fe
     restart: always
     ports:
-      - '3000:3000'
+      - '3011:3011'
     environment:
-      - MONGO_URI=mongodb://mongo:27017/mydb
+      - MONGOOSE_URL=mongodb://mongo:27017/mydb
+      - PORT=3011
     depends_on:
       - mongo
 
