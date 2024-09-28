@@ -3,6 +3,7 @@ import { ref } from 'vue'
 
 interface User {
   access_token: string
+  email: string
 }
 
 export const useAuthStore = defineStore('auth', () => {
