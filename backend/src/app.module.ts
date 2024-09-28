@@ -9,8 +9,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ScheduleModule } from '@nestjs/schedule';
 import { Co2Module } from './co2/co2.module';
 import { DirectionsModule } from './directions/directions.module';
-import { AccidentIndexerModule } from './accidentIndexer/accidentIndexer.module';
 import { CurrentAccidentsModule } from './current-accidents/current-accidents.module';
+import { AccidentsModule } from './accidents/accidents.module';
 
 @Module({
   imports: [
@@ -22,8 +22,8 @@ import { CurrentAccidentsModule } from './current-accidents/current-accidents.mo
     ScheduleModule.forRoot(),
     Co2Module,
     DirectionsModule,
-    AccidentIndexerModule,
     CurrentAccidentsModule,
+    AccidentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -70,4 +70,32 @@ export class UsersService {
     }
     return {};
   }
+
+  async addRoute(id: string, directions: any) {
+    const time = new Date().toISOString();
+    const { routeHistory } = await this.userModel.findById(id) as User
+    const updateDto = {
+      routeHistory: [...routeHistory, { timeStamp: time, directions }]
+    }
+    const user = await this.userModel.findByIdAndUpdate(id, updateDto, {new: true});
+    return userToUserWithoutPassword(user);
+  }
+
+  async clearRouteHistory(id: string) {
+    const updateDto = {
+      routeHistory: []
+    }
+    const user = await this.userModel.findByIdAndUpdate(id, updateDto, {new: true});
+    return userToUserWithoutPassword(user);
+  }
+
+  async deleteRouteByTimestamp(id: string, timestamp: string) {
+    const { routeHistory } = await this.userModel.findById(id) as User
+    const updatedRouteHistory = routeHistory.filter(route => route.timeStamp !== timestamp)
+    const updateDto = {
+      routeHistory: updatedRouteHistory
+    }
+    const user = await this.userModel.findByIdAndUpdate(id, updateDto, {new: true});
+    return userToUserWithoutPassword(user);
+  }
 }

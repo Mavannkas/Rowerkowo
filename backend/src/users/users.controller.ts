@@ -41,4 +41,19 @@ export class UsersController {
   remove(@Param('id') id: string) {
     return this.usersService.remove(id);
   }
+
+  @Post(':id/route')
+  addRoute(@Param('id') id: string, @Body() route: any) {
+    return this.usersService.addRoute(id, route);
+  }
+
+  @Delete(':id/routes')
+  deleteRoutes(@Param('id') id: string) {
+    return this.usersService.clearRouteHistory(id);
+  }
+
+  @Delete(':id/route/:timestamp')
+  deleteRouteByTimestamp(@Param('id') id: string, @Param('timestamp') timestamp: string) {
+    return this.usersService.deleteRouteByTimestamp(id, timestamp);
+  }
 }
