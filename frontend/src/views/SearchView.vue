@@ -33,8 +33,8 @@ const destination = ref('')
 const handleSearchForm = async () => {
   const startingPointData = await getPointData(startingPoint.value)
   const destinationData = await getPointData(destination.value)
-  console.log(startingPointData)
-  console.log(destinationData)
+  console.log(startingPointData[0])
+  console.log(destinationData[0])
   console.log('Kamil działaj :)')
 }
 </script>
