@@ -6,8 +6,8 @@ import { Accident, AccidentEntity } from './entities/accident.entity';
 import { AccidentApiResponseData, RawAccident } from './accidents.types';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { AirQualityNearToRoadDto } from '../co2/dto/AirQualityNearToRoad.dto';
 import { getDistanceFromLatLonInMeters, getSquare } from '../utils/distance.utils';
+import { AccidentsNearToRoadDto } from './dto/AccidentsNearToRoad.dto';
 
 @Injectable()
 export class AccidentsService {
@@ -70,7 +70,7 @@ export class AccidentsService {
       startLongitude,
       endLatitude,
       endLongitude,
-    }: AirQualityNearToRoadDto) {
+    }: AccidentsNearToRoadDto) {
 
     if(!startLatitude || !startLongitude || !endLatitude || !endLongitude) {
       throw new BadRequestException('Missing required parameters');
