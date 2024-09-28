@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import LoginView from '../views/LoginView.vue'
+import SearchView from '../views/SearchView.vue'
 import { useAuthStore } from '../stores/auth'
 
 export enum ROUTING_URLS {
   MAIN = '/',
-  ABOUT = '/about',
+  MAP = '/map',
+  ROUTES = '/routes',
+  ACCOUNT = '/account',
   LOGIN = '/login',
   REGISTER = '/register'
 }
@@ -15,20 +16,29 @@ const router = createRouter({
   routes: [
     {
       path: ROUTING_URLS.MAIN,
-      name: 'home',
-      component: HomeView,
+      name: 'search',
+      component: SearchView
+    },
+    {
+      path: ROUTING_URLS.MAP,
+      name: 'map',
+      component: () => import('../views/MapView.vue')
+    },
+    {
+      path: ROUTING_URLS.ROUTES,
+      name: 'routes',
+      component: () => import('../views/RoutesView.vue'),
       meta: { requiresAuth: true }
     },
     {
-      path: ROUTING_URLS.ABOUT,
-      name: 'about',
-      component: () => import('../views/AboutView.vue'),
-      meta: { requiresAuth: true }
+      path: ROUTING_URLS.ACCOUNT,
+      name: 'account',
+      component: () => import('../views/AccountView.vue')
     },
     {
       path: ROUTING_URLS.LOGIN,
       name: 'login',
-      component: LoginView
+      component: () => import('../views/LoginView.vue')
     },
     {
       path: ROUTING_URLS.REGISTER,
@@ -38,7 +48,7 @@ const router = createRouter({
   ]
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _, next) => {
   const authStore = useAuthStore()
 
   if (to.meta.requiresAuth && !authStore.isLoggedIn) {
