@@ -15,6 +15,5 @@
     "dep:prod:run": "docker compose -f docker-compose.prod.yaml up -d --build",
     "dep:prod:stop": "docker compose -f docker-compose.prod.yaml stop",
     "dep:prod:rm": "docker compose -f docker-compose.prod.yaml rm"
-
   }
 }

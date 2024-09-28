@@ -13,6 +13,7 @@ import { RouterView } from 'vue-router'
 import { onMounted } from 'vue'
 import { initFlowbite } from 'flowbite'
 import { useAuthStore } from '@/stores/auth'
+import 'leaflet/dist/leaflet.css'
 import BaseBottomNavigation from './components/BaseBottomNavigation.vue'
 
 const authStore = useAuthStore()
