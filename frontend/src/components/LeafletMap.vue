@@ -22,6 +22,8 @@ const props = defineProps<{
   coordinates: Coordinate[]
 }>()
 
+console.log('props.coordinates', props.coordinates)
+
 const initialMap = ref<L.Map | null>(null)
 
 onMounted(() => {
