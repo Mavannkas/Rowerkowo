@@ -16,32 +16,30 @@ export class AccidentIndexerService {
 
   @Cron(CronExpression.EVERY_HOUR)
   async indexAccidents() {
+    console.log('Indexing accidents');
     const accidents = await this.getAccidentData();
+    await this.accidentEntityModel.deleteMany();
     await this.accidentEntityModel.insertMany(accidents);
   }
 
   async getAccidentData(): Promise<Accident[]> {
-    const accidentApiParams = {
-      type: 'DETAILS',
-      rok: this.getLastTwoFullYears(),
-      wybrane_wojewodztwa: [12], // Małopolskie
-      rodzaj_pojazdu_uczestnika: [10], // Rower
-      alkohol: false,
-      groupBy: 'WOJ',
-      obszar_mapy: {
-        topRightCorner: {
-          lat: 56.97101128322185,
-          lng: 34.03564453125,
-        },
-        bottomLeftCorner: {
-          lat: 42.17685757125389,
-          lng: 4.9987792968750036,
-        },
-      }, //Coordinates containing the whole Małopolskie voivodeship
-    };
+    const lastTwoYears = this.getLastTwoFullYears();
+    const formData = new URLSearchParams();
+    formData.append('type', 'DETAILS');
+    formData.append('rok[]', lastTwoYears[0]);
+    formData.append('rok[]', lastTwoYears[1]);
+    formData.append('wybrane_wojewodztwa[]', '12');
+    formData.append('rodzaj_pojazdu_uczestnika[]', '10');
+    formData.append('groupBy', 'GMI');
+    formData.append('obszar_mapy[topRightCorner][lat]', '56.97101128322185');
+    formData.append('obszar_mapy[topRightCorner][lng]', '34.03564453125');
+    formData.append('obszar_mapy[bottomLeftCorner][lat]', '42.17685757125389');
+    formData.append('obszar_mapy[bottomLeftCorner][lng]', '4.9987792968750036');
     const accidentApiEndpoint = `${process.env.ACCIDENTS_API_URL}/app/api/nodes/post_zdarzenia.php`
     const { data } = await firstValueFrom(
-      this.httpService.post<AccidentApiResponseData>(accidentApiEndpoint, accidentApiParams).pipe(),
+      this.httpService.post<AccidentApiResponseData>(accidentApiEndpoint, formData.toString(), {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      }).pipe(),
     );
     return data.mapa.wojewodztwa.flatMap((wojewodztwo) =>
       wojewodztwo.powiaty.flatMap((powiat) =>
@@ -60,8 +58,8 @@ export class AccidentIndexerService {
     };
   }
 
-  getLastTwoFullYears(): number[] {
+  getLastTwoFullYears(): string[] {
     const currentYear = new Date().getFullYear();
-    return [currentYear - 1, currentYear - 2];
+    return [currentYear - 2, currentYear - 1].map(String);
   }
 }
