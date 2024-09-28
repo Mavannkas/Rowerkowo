@@ -509,6 +509,7 @@ end
 
 function safety_handler(profile,way,result,data)
   -- convert duration into cyclability
+  -- add additional checks for pollution, traffic etc
   if profile.properties.weight_name == 'cyclability' then
     local safety_penalty = profile.unsafe_highway_list[data.highway] or 1.
     local is_unsafe = safety_penalty < 1
