@@ -1,6 +1,6 @@
 <template>
   <div
-    class="fixed bottom-0 left-0 z-50 h-16 w-full border-t border-gray-200 bg-white dark:border-gray-600 dark:bg-gray-700"
+    class="sticky bottom-0 left-0 z-50 mt-auto h-16 w-full border-t border-gray-200 bg-white dark:border-gray-600 dark:bg-gray-700"
   >
     <div class="mx-auto grid h-full max-w-lg grid-cols-4 font-medium">
       <RouterLink

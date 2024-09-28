@@ -1,6 +1,6 @@
 <template>
   <!--  Empty div is needed here to prevent the map from being rendered before the map container is created-->
-  <div :style="{ height: '100vh' }">
+  <div :style="{ height: '100%' }">
     <div id="map" :style="{ height: '100%' }"></div>
   </div>
 </template>
