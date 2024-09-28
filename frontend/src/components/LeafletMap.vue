@@ -1,7 +1,7 @@
 <template>
   <!--  Empty div is needed here to prevent the map from being rendered before the map container is created-->
-  <div>
-    <div id="map" :style="{ height: 'calc(100vh - 64px)' }"></div>
+  <div class="min-h-full">
+    <div id="map" :style="{ height: '100%' }"></div>
   </div>
 </template>
 
