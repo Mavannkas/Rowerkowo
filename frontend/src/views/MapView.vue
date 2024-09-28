@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <Map :coordinates="krakowCoordinates" />
-  </div>
+  <Map :coordinates="krakowCoordinates" />
 </template>
 
 <script setup lang="ts">
