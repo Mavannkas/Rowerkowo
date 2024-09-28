@@ -9,6 +9,7 @@ import { useQuery } from '@tanstack/vue-query'
 import polyline from '@mapbox/polyline'
 import Map from '@/components/LeafletMap.vue'
 import { useLocationStore } from '@/stores/location'
+import BaseButton from '@/components/BaseButton.vue'
 
 interface RouteResponse {
   code: string
@@ -52,7 +53,7 @@ const fetchRouteData = async (): Promise<RouteResponse> => {
   return response.data
 }
 
-const { data, isPending, error } = useQuery<RouteResponse>({
+const { data } = useQuery<RouteResponse>({
   queryKey: ['routeData'],
   queryFn: fetchRouteData
 })

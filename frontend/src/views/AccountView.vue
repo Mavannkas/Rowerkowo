@@ -6,10 +6,10 @@
       <span>{{ authStore.user ? `${authStore.user?.email}` : 'Niezalogowany użytkownik' }}</span>
     </div>
     <div class="mt-auto flex flex-col gap-4" v-if="!authStore.user">
-      <RouterLink class="w-full" to="/login">
+      <RouterLink class="w-full" :to="ROUTING_URLS.LOGIN">
         <BaseButton class="w-full">Zaloguj się</BaseButton>
       </RouterLink>
-      <RouterLink class="w-full" to="/register">
+      <RouterLink class="w-full" :to="ROUTING_URLS.REGISTER">
         <BaseButton class="w-full" styling="outline">Zarejestruj się</BaseButton>
       </RouterLink>
     </div>
@@ -17,6 +17,7 @@
 </template>
 <script setup lang="ts">
 import BaseButton from '@/components/BaseButton.vue'
+import { ROUTING_URLS } from '@/router'
 import { useAuthStore } from '@/stores/auth'
 
 const authStore = useAuthStore()
