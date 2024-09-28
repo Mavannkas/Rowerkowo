@@ -1,13 +1,13 @@
 <template>
-  <Map :coordinates="routeCoordinates" />
+  <Map :key="version" :coordinates="routeCoordinates" />
 </template>
 
 <script setup lang="ts">
-import Map from '@/components/LeafletMap.vue'
+import { computed, ref, watch } from 'vue'
 import axios from 'axios'
 import { useQuery } from '@tanstack/vue-query'
 import polyline from '@mapbox/polyline'
-import { computed } from 'vue'
+import Map from '@/components/LeafletMap.vue'
 
 interface RouteResponse {
   code: string
@@ -23,6 +23,7 @@ interface RouteResponse {
 // TODO replace with dynamic values
 const start = '19.984829,50.066164'
 const end = '19.936580,50.061430'
+const version = ref(0)
 
 const fetchRouteData = async (): Promise<RouteResponse> => {
   const response = await axios.get<RouteResponse>('http://localhost:3011/directions', {
@@ -57,5 +58,9 @@ const routeCoordinates = computed(() => {
   })
 
   return coordinates
+})
+
+watch(routeCoordinates, () => {
+  version.value++
 })
 </script>
