@@ -11,11 +11,11 @@ services:
       - mongo-dev-data:/data/db
 
   osmr:
-    build: ./osmr
+    build: osrm
     container_name: osmr_basic_bicycle
     restart: always
     ports:
-      - '5000:5000'
+      - '5001:5001'
 
 volumes:
   mongo-dev-data:

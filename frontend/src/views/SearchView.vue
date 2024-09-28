@@ -18,8 +18,8 @@
         v-model="destination"
       />
       <BaseButton type="submit" @click.prevent="handleSearchForm"
-        >Znajdź najlepszą trasę</BaseButton
-      >
+        >Znajdź najlepszą trasę
+      </BaseButton>
     </form>
   </div>
 </template>
@@ -29,11 +29,16 @@ import BaseSearchInput from '@/components/BaseSearchInput.vue'
 import { getCurrentGeolocation } from '@/helpers/getCurrentGeolocation'
 import { getPointData } from '@/helpers/getPointData'
 import { ref } from 'vue'
+import { useLocationStore } from '@/stores/location'
+import { useRouter } from 'vue-router'
+import { ROUTING_URLS } from '@/router'
 
 const isGeolocated = ref(false)
 
 const startingPoint = ref('')
 const destination = ref('')
+const locationStore = useLocationStore()
+const router = useRouter()
 
 const handleSearchForm = async () => {
   try {
@@ -52,6 +57,9 @@ const handleSearchForm = async () => {
     if (!startingPointData || !destinationData) {
       throw new Error('No data')
     }
+
+    locationStore.update(startingPointData, destinationData)
+    void router.push(ROUTING_URLS.MAP)
 
     console.log(startingPointData)
     console.log(destinationData)
