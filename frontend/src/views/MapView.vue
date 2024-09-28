@@ -1,17 +1,16 @@
 <template>
-  <main class="container mx-auto text-black">
-    <p
-      class="mb-3 text-gray-500 first-letter:float-start first-letter:me-3 first-letter:text-7xl first-letter:font-bold first-letter:text-gray-900 first-line:uppercase first-line:tracking-widest"
-    >
-      Track work across the enterprise through an open, collaborative platform. Link issues across
-      Jira and ingest data from other software development tools, so your IT support and operations
-      teams have richer contextual information to rapidly respond to requests, incidents, and
-      changes.
-    </p>
-    <p class="text-gray-500">
-      Deliver great service experiences fast - without the complexity of traditional ITSM
-      solutions.Accelerate critical development work, eliminate toil, and deploy changes with ease,
-      with a complete audit trail for every change.
-    </p>
-  </main>
+  <div id="layout">
+    <Map :coordinates="krakowCoordinates" />
+  </div>
 </template>
+
+<script setup lang="ts">
+import Map from '@/components/LeafletMap.vue'
+
+const krakowCoordinates = [
+  { lat: 50.0619, lng: 19.9383 }, // Example: Main Market Square
+  { lat: 50.0671, lng: 19.9474 }, // Example: Wawel Castle
+  { lat: 50.0527, lng: 19.9405 }, // Example: Vistula Boulevards
+  { lat: 50.0594, lng: 19.9386 } // Example: Planty Park
+]
+</script>
