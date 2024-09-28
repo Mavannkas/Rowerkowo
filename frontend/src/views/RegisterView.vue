@@ -95,7 +95,7 @@ const router = useRouter()
 
 const registerMutation = useMutation({
   mutationFn: async () => {
-    const response = await axios.post('/api/users', {
+    const response = await axios.post('http://localhost:3011/users', {
       username: email.value,
       password: password.value
     })

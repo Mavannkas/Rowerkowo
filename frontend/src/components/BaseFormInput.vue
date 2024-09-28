@@ -21,7 +21,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineOptions } from 'vue'
 defineProps<{
   label: string
   type: string

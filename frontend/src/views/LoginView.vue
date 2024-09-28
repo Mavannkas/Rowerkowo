@@ -88,10 +88,13 @@ const email = ref('')
 const password = ref('')
 const loginMutation = useMutation({
   mutationFn: async ({ email, password }: { email: string; password: string }) => {
-    const response = await axios.post<{ access_token: string }>('/api/auth/login', {
-      username: email,
-      password: password
-    })
+    const response = await axios.post<{ access_token: string }>(
+      'http://localhost:3011/auth/login',
+      {
+        username: email,
+        password: password
+      }
+    )
     return response.data
   },
   onError: (error) => {
