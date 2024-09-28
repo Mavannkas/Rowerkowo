@@ -1,5 +1,5 @@
 <template>
-  <div :style="{ flex: '1' }">
+  <div :style="{ height: '100%' }">
     <div id="map" :style="{ height: '100%' }"></div>
   </div>
 </template>

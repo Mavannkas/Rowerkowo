@@ -14,9 +14,11 @@
   },
   "dependencies": {
     "@tanstack/vue-query": "^5.56.2",
+    "@vueuse/core": "^11.1.0",
     "axios": "^1.7.7",
     "flowbite": "^2.5.1",
     "flowbite-vue": "^0.1.6",
+    "leaflet-geosearch": "^4.0.0",
     "pinia": "^2.1.7",
     "vue": "^3.4.29",
     "vue-router": "^4.3.3"
