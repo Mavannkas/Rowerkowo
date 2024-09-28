@@ -1,5 +1,5 @@
 <template>
-  <div id="layout">
+  <div>
     <Map :coordinates="krakowCoordinates" />
   </div>
 </template>
