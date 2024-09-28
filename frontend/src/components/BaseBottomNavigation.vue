@@ -4,7 +4,7 @@
   >
     <div class="mx-auto grid h-full max-w-lg grid-cols-4 font-medium">
       <RouterLink
-        to="/"
+        :to="ROUTING_URLS.SEARCH"
         class="group inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800"
       >
         <svg
@@ -27,7 +27,7 @@
         >
       </RouterLink>
       <RouterLink
-        to="/map"
+        :to="ROUTING_URLS.MAP"
         class="group inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800"
       >
         <svg
@@ -50,7 +50,7 @@
         >
       </RouterLink>
       <RouterLink
-        to="/routes"
+        :to="ROUTING_URLS.ROUTES"
         class="group inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800"
       >
         <svg
@@ -77,7 +77,7 @@
         >
       </RouterLink>
       <RouterLink
-        to="/account"
+        :to="ROUTING_URLS.ACCOUNT"
         class="group inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800"
       >
         <svg
@@ -101,5 +101,6 @@
 </template>
 
 <script setup lang="ts">
+import { ROUTING_URLS } from '@/router'
 import { RouterLink } from 'vue-router'
 </script>

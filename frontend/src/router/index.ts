@@ -3,7 +3,7 @@ import SearchView from '../views/SearchView.vue'
 import { useAuthStore } from '../stores/auth'
 
 export enum ROUTING_URLS {
-  MAIN = '/',
+  SEARCH = '/',
   MAP = '/map',
   ROUTES = '/routes',
   ACCOUNT = '/account',
@@ -15,7 +15,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: ROUTING_URLS.MAIN,
+      path: ROUTING_URLS.SEARCH,
       name: 'search',
       component: SearchView
     },
