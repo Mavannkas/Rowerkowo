@@ -10,6 +10,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { Co2Module } from './co2/co2.module';
 import { DirectionsModule } from './directions/directions.module';
 import { AccidentIndexerModule } from './accidentIndexer/accidentIndexer.module';
+import { CurrentAccidentsModule } from './current-accidents/current-accidents.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AccidentIndexerModule } from './accidentIndexer/accidentIndexer.module'
     Co2Module,
     DirectionsModule,
     AccidentIndexerModule,
+    CurrentAccidentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

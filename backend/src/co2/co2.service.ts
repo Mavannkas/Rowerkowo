@@ -171,7 +171,7 @@ export class Co2Service {
     const averageValue =
       co2Data.reduce((acc, curr) => acc + curr.value, 0) / co2Data.length;
 
-    return averageValue;
+    return averageValue || 1;
   }
 
   //distance in meters between two points in latitude and longitude
