@@ -1,9 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { SearchResult } from 'leaflet-geosearch/dist/providers/provider.js'
-import type { RawResult } from 'leaflet-geosearch/dist/providers/openStreetMapProvider.js'
 
-export type LocationSearchResult = SearchResult<RawResult>
+export type LocationSearchResult = { x: number; y: number }
 
 export const useLocationStore = defineStore('location', () => {
   const start = ref<LocationSearchResult>()
