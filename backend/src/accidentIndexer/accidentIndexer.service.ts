@@ -40,9 +40,9 @@ export class AccidentIndexerService {
         },
       }, //Coordinates containing the whole Małopolskie voivodeship
     };
-    const accidentApiUrl = process.env.ACCIDENTS_API_URL
+    const accidentApiEndpoint = `${process.env.ACCIDENTS_API_URL}/app/api/nodes/post_zdarzenia.php`
     const { data } = await firstValueFrom(
-      this.httpService.post<AccidentApiResponseData>(accidentApiUrl, accidentApiParams).pipe(),
+      this.httpService.post<AccidentApiResponseData>(accidentApiEndpoint, accidentApiParams).pipe(),
     );
     return data.mapa.wojewodztwa.flatMap((wojewodztwo) =>
       wojewodztwo.powiaty.flatMap((powiat) =>
