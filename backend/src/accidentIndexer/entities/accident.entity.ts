@@ -19,12 +19,12 @@ export class AccidentEntity implements Accident {
   @Prop({
     required: true,
   })
-  latitude: string;
+  latitude: number;
 
   @Prop({
     required: true,
   })
-  longitude: string;
+  longitude: number;
 }
 
 export const AccidentSchema = SchemaFactory.createForClass(AccidentEntity);
