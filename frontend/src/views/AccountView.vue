@@ -1,18 +1,27 @@
 <template>
-  <main>
-    <section>
-      <div>
-        <h1>Konto</h1>
-        <p>
-          <span>Witaj, </span>
-          <span></span>
-        </p>
-        <p>
-          <span>Twój adres email to: </span>
-          <span></span>
-        </p>
-      </div>
-    </section>
-  </main>
+  <section class="flex h-full flex-col gap-4 p-6">
+    <h1 class="text-3xl font-bold">Moje konto</h1>
+    <div class="flex items-center gap-3 text-lg">
+      <div class="h-12 w-12 rounded-full bg-slate-500"></div>
+      <span>{{
+        authStore.user && authStore.isLoggedIn
+          ? `${authStore.user?.email}`
+          : 'Niezalogowany użytkownik'
+      }}</span>
+    </div>
+    <div class="mt-auto" v-if="authStore.user && authStore.isLoggedIn">
+      <RouterLink class="w-full" to="/login">
+        <BaseButton class="w-full">Zaloguj się</BaseButton>
+      </RouterLink>
+      <RouterLink class="w-full" to="/register">
+        <BaseButton class="w-full" styling="outline">Zarejestruj się</BaseButton>
+      </RouterLink>
+    </div>
+  </section>
 </template>
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import BaseButton from '@/components/BaseButton.vue'
+import { useAuthStore } from '@/stores/auth'
+
+const authStore = useAuthStore()
+</script>
