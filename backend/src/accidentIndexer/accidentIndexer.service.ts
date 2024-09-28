@@ -8,7 +8,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { UserEntity } from '../users/entities/user.entity';
 import { Model } from 'mongoose';
 
-@Injectable
+@Injectable()
 export class AccidentIndexerService {
   constructor(
     private readonly httpService: HttpService,

@@ -10,4 +10,4 @@ RUN osrm-customize malopolskie-latest.osrm
 
 CMD osrm-routed --algorithm mld malopolskie-latest.osrm
 
-EXPOSE 5000
+EXPOSE 5001
