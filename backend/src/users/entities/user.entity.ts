@@ -8,6 +8,12 @@ export interface User {
   username: string;
   password: string;
   role: UserRole;
+  routeHistory?: UserRoute[]
+}
+
+export interface UserRoute {
+  timeStamp: string;
+  directions: any;
 }
 
 export enum UserRole {
@@ -21,6 +27,7 @@ export const userToUserWithoutPassword = (user: User): UserWithoutPassword => ({
   _id: user._id,
   username: user.username,
   role: user.role,
+  routeHistory: user.routeHistory
 });
 
 @Schema()
@@ -44,6 +51,12 @@ export class UserEntity implements User {
     default: 'user',
   })
   role: UserRole;
+
+  @Prop({
+    required: false,
+    default: []
+  })
+  routeHistory: UserRoute[]
 }
 
 export const UserSchema = SchemaFactory.createForClass(UserEntity);
