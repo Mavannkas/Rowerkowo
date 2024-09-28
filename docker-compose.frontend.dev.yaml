@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  app:
+    build: ./backend
+    container_name: node_app_fe
+    restart: always
+    ports:
+      - '3000:3000'
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/mydb
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:7.0
+    container_name: mongodb_fe
+    restart: always
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
