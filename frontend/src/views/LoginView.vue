@@ -112,7 +112,7 @@ const loginMutation = useMutation({
   onSuccess: (data) => {
     console.log(data)
     authStore.login({ access_token: data.access_token })
-    router.push(ROUTING_URLS.MAIN)
+    router.push(ROUTING_URLS.SEARCH)
   }
 })
 
