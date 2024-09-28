@@ -53,4 +53,4 @@ pnpm-lock.yaml
 dist
 uploads
 
-osmr/malopolskie-latest.osm.pbf
+osrm/malopolskie-latest.osm.pbf
