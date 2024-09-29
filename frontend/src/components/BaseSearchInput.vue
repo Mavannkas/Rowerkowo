@@ -18,6 +18,7 @@
         @click="handleGeoEmit"
         :class="isGeolocated ? 'text-primary-600' : ''"
       />
+      <IconClose v-if="deletable" @click="handleCloseInput" />
       <ul
         v-if="inputVisible && results.length"
         class="absolute left-1/2 top-full z-10 w-full -translate-x-1/2 rounded-lg rounded-t-none border-2 border-t-0 border-gray-300 bg-white"
@@ -45,6 +46,7 @@ import { ref } from 'vue'
 import IconGeolocation from './IconGeolocation.vue'
 import { getGeolocationPermission } from '@/helpers/getGeolocationPermission'
 import { getCurrentGeolocation } from '@/helpers/getCurrentGeolocation'
+import IconClose from './IconClose.vue'
 
 defineProps<{
   label?: string
@@ -53,6 +55,7 @@ defineProps<{
   placeholder?: string
   geoInput?: boolean
   query?: string
+  deletable?: boolean
 }>()
 
 defineOptions({
@@ -62,7 +65,7 @@ defineOptions({
 const input = defineModel<string>({ default: '' })
 const inputVisible = ref<boolean>(false)
 const results = ref<SearchResult<RawResult>[]>([])
-const emit = defineEmits(['geolocation'])
+const emit = defineEmits(['geolocation', 'close'])
 const isGeolocated = ref(false)
 
 watchDebounced(
@@ -93,6 +96,10 @@ const handleGeoEmit = async () => {
   }
   input.value = isGeolocated.value ? 'Twoja lokalizacja' : ''
   emit('geolocation', isGeolocated.value)
+}
+
+const handleCloseInput = () => {
+  emit('close')
 }
 
 const handleBlur = () => {

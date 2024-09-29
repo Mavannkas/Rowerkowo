@@ -14,10 +14,12 @@
           @geolocation="(value) => (isGeolocated = value)"
         />
         <BaseSearchInput
-          v-for="(waypoint, index) in additionalWaypoints"
+          v-for="(_, index) in additionalWaypoints"
           :key="index"
           type="text"
           label="Punkt pośredni"
+          deletable
+          @close="additionalWaypoints.splice(index, 1)"
           :id="`waypoint-${index}`"
           v-model="additionalWaypoints[index]"
         />
