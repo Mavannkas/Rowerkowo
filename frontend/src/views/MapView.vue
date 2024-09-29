@@ -9,7 +9,6 @@ import { useQuery } from '@tanstack/vue-query'
 import polyline from '@mapbox/polyline'
 import Map from '@/components/LeafletMap.vue'
 import { useLocationStore } from '@/stores/location'
-import BaseButton from '@/components/BaseButton.vue'
 
 interface RouteResponse {
   code: string
@@ -26,14 +25,21 @@ const version = ref(0)
 const locationStore = useLocationStore()
 
 const fetchRouteData = async (): Promise<RouteResponse> => {
-  if (!locationStore.start || !locationStore.end) {
+  if (
+    !locationStore.start ||
+    !locationStore.end ||
+    !locationStore.start.y ||
+    !locationStore.start.x ||
+    !locationStore.end.y ||
+    !locationStore.end.x
+  ) {
     throw new Error('Start or end location is missing')
   }
 
-  const startLat = locationStore.start?.y || locationStore.start?.raw?.lat
-  const startLng = locationStore.start?.x || locationStore.start?.raw?.lon
-  const endLat = locationStore.end?.y || locationStore.end?.raw?.lat
-  const endLng = locationStore.end?.x || locationStore.end?.raw?.lon
+  const startLat = locationStore.start?.y
+  const startLng = locationStore.start?.x
+  const endLat = locationStore.end?.y
+  const endLng = locationStore.end?.x
 
   if (!startLat || !startLng || !endLat || !endLng) {
     throw new Error('Invalid coordinates for start or end location')

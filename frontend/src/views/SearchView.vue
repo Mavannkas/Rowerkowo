@@ -93,7 +93,7 @@ import BaseButton from '@/components/BaseButton.vue'
 import BaseSearchInput from '@/components/BaseSearchInput.vue'
 import { getCurrentGeolocation } from '@/helpers/getCurrentGeolocation'
 import { getPointData } from '@/helpers/getPointData'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useLocationStore } from '@/stores/location'
 import { useRouter } from 'vue-router'
 import { ROUTING_URLS } from '@/router'
@@ -111,6 +111,12 @@ const withChildren = ref(false)
 const avoidNationalRoads = ref(false)
 const locationStore = useLocationStore()
 const router = useRouter()
+
+onMounted(() => {
+  const data = locationStore.getSearchData()
+  startingPoint.value = data.startingPointName
+  destination.value = data.destinationPointName
+})
 
 const bikeOptions = [
   {
@@ -145,36 +151,28 @@ const addNewWaypoint = () => {
   additionalWaypoints.value = [...additionalWaypoints.value, '']
 }
 
-const mappingData = [
-  {
-    value: 'sport',
-    condition:
-      (bikeOption.value === 'mountainBike' || bikeOption.value === 'roadBike') &&
-      rideOption.value === 'trainingRide' &&
-      !withChildren.value &&
-      !avoidNationalRoads.value
-  },
-  {
-    value: 'family',
-    condition:
-      bikeOption.value === 'cityBike' &&
-      (rideOption.value === 'recreationalRide' || rideOption.value === 'cityRide') &&
-      withChildren.value
-  }
-]
-
 const getMappedValue = () => {
-  for (let mapping of mappingData) {
-    if (mapping.condition) {
-      return mapping.value
-    }
+  if (
+    bikeOption.value === 'cityBike' &&
+    (rideOption.value === 'recreationalRide' || rideOption.value === 'cityRide') &&
+    withChildren.value
+  ) {
+    return 'family'
+  }
+  if (
+    (bikeOption.value === 'mountainBike' || bikeOption.value === 'roadBike') &&
+    rideOption.value === 'trainingRide' &&
+    !withChildren.value && // Bez dzieci
+    !avoidNationalRoads.value
+  ) {
+    return 'sport'
   }
   return 'default'
 }
-
-const filterValue = getMappedValue()
+const filterValue = ref('default')
 
 const handleSearchForm = async () => {
+  filterValue.value = getMappedValue()
   try {
     let startingPointData: { x: number; y: number } | undefined
 
@@ -198,15 +196,14 @@ const handleSearchForm = async () => {
     if (!startingPointData || !destinationData) {
       throw new Error('No data')
     }
-
-    locationStore.update(startingPointData, destinationData, filterValue)
+    locationStore.update(
+      startingPointData,
+      destinationData,
+      filterValue.value,
+      startingPoint.value,
+      destination.value
+    )
     void router.push(ROUTING_URLS.MAP)
-
-    console.log(additionalWaypointsData)
-    console.log(startingPointData)
-    console.log(destinationData)
-
-    // TODO - Send data to backend
   } catch (error) {
     console.error(error)
   }

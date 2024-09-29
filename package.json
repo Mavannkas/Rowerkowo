@@ -9,7 +9,7 @@
     "dep:backend:run": "docker compose -f docker-compose.backend.dev.yaml up -d --build",
     "dep:backend:stop": "docker compose -f docker-compose.backend.dev.yaml stop",
     "dep:backend:rm": "docker compose -f docker-compose.backend.dev.yaml rm",
-    "dep:frontend:run": "docker compose -f docker-compose.frontend.dev.yaml up",
+    "dep:frontend:run": "docker compose -f docker-compose.frontend.dev.yaml up --build",
     "dep:frontend:stop": "docker compose -f docker-compose.frontend.dev.yaml stop",
     "dep:frontend:rm": "docker compose -f docker-compose.frontend.dev.yaml rm",
     "dep:prod:run": "docker compose -f docker-compose.prod.yaml up -d --build",
