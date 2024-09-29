@@ -240,12 +240,12 @@ function process_segment(profile, segment)
     co2=0.05
   end
 
-  if accidents then
+  if accidents==0 then
     accidents=0.05
   end
 
   
-  if curr_accidents then
+  if curr_accidents==0 then
     accidents=0.05
   end
 
