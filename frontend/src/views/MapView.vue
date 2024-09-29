@@ -61,13 +61,16 @@ const fetchRouteData = async (): Promise<RouteResponse> => {
   const additionalWaypoints = locationStore.mid
 
   if (additionalWaypoints && additionalWaypoints.length > 0) {
-    const response = await axios.get<RouteResponse>('http://localhost:3011/directions/trip', {
+    const response = await axios.get<any >('http://localhost:3011/directions/trip', {
       params: {
-        steps: [locationStore.start, ...additionalWaypoints, locationStore.end],
+        stops: [startCoordinates, ...additionalWaypoints.map(point =>`${point.x},${point.y}`), endCoordinates].join(';'),
         mode: locationStore.mode
       }
     })
-    return response.data
+    return {
+      ...response.data,
+      routes: response.data?.trips
+    }
   }
   const response = await axios.get<RouteResponse>('http://localhost:3011/directions', {
     params: {
