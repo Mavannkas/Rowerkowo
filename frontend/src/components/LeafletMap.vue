@@ -16,6 +16,7 @@ const INITIAL_ZOOM = 13
 type Coordinate = {
   lat: number
   lng: number
+  isWaypoint?: boolean
 }
 
 const props = defineProps<{
@@ -37,6 +38,11 @@ onMounted(() => {
 
   const firstPoint = props.coordinates[0]
   L.marker([firstPoint.lat, firstPoint.lng]).addTo(map)
+
+  const waypoints = props.coordinates.filter((coord) => coord.isWaypoint)
+  waypoints.forEach((waypoint) => {
+    L.marker([waypoint.lat, waypoint.lng]).addTo(map)
+  })
 
   const lastPoint = props.coordinates[props.coordinates.length - 1]
   L.marker([lastPoint.lat, lastPoint.lng]).addTo(map)
