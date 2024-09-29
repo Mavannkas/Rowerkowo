@@ -1,5 +1,13 @@
 <template>
   <Map :key="version" :coordinates="routeCoordinates" />
+  <div class="flex h-[8%] items-center justify-around">
+    <p v-if="distance !== ''" class="text-lg">
+      Dystans: <span class="font-bold text-primary-600">{{ distance }}</span>
+    </p>
+    <p v-if="duration !== ''" class="text-lg">
+      Czas: <span class="font-bold text-primary-600">{{ duration }}</span>
+    </p>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -16,6 +24,8 @@ interface RouteResponse {
     legs: Array<{
       steps: Array<{
         geometry: string
+        distance: number
+        duration: number
       }>
     }>
   }>
@@ -81,6 +91,26 @@ const routeCoordinates = computed(() => {
   })
 
   return coordinates
+})
+
+const distance = computed(() => {
+  if (!data.value || !data.value.routes || !data.value.routes.length) return ''
+
+  const distance = data.value.routes[0].legs[0].steps.reduce((acc, step) => acc + step.distance, 0)
+
+  const distanceString = `${(distance / 1000).toFixed(2)} km`
+
+  return distanceString
+})
+const duration = computed(() => {
+  if (!data.value || !data.value.routes || !data.value.routes.length) return ''
+
+  const duration = data.value.routes[0].legs[0].steps.reduce((acc, step) => acc + step.duration, 0)
+  const time = new Date()
+  time.setSeconds(duration)
+  const timeString = `${time.getHours()}h ${time.getMinutes()}m`
+
+  return timeString
 })
 
 watch(routeCoordinates, () => {

@@ -6,6 +6,7 @@
       <RouterLink
         :to="ROUTING_URLS.SEARCH"
         class="group inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800"
+        :class="currentPath === ROUTING_URLS.SEARCH ? 'text-primary-600 dark:text-primary-500' : ''"
       >
         <svg
           class="mb-1 h-5 w-5 text-gray-500 group-hover:text-primary-600 dark:text-gray-400 dark:group-hover:text-primary-500"
@@ -23,6 +24,9 @@
         </svg>
         <span
           class="text-sm text-gray-500 group-hover:text-primary-600 dark:text-gray-400 dark:group-hover:text-primary-500"
+          :class="
+            currentPath === ROUTING_URLS.SEARCH ? 'text-primary-600 dark:text-primary-500' : ''
+          "
           >Szukaj</span
         >
       </RouterLink>
@@ -32,6 +36,7 @@
       >
         <svg
           class="mb-1 h-5 w-5 text-gray-500 group-hover:text-primary-600 dark:text-gray-400 dark:group-hover:text-primary-500"
+          :class="currentPath === ROUTING_URLS.MAP ? 'text-primary-600 dark:text-primary-500' : ''"
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           fill="currentColor"
@@ -46,6 +51,7 @@
 
         <span
           class="text-sm text-gray-500 group-hover:text-primary-600 dark:text-gray-400 dark:group-hover:text-primary-500"
+          :class="currentPath === ROUTING_URLS.MAP ? 'text-primary-600 dark:text-primary-500' : ''"
           >Mapa</span
         >
       </RouterLink>
@@ -55,6 +61,9 @@
       >
         <svg
           class="mb-1 h-5 w-5 text-gray-500 group-hover:text-primary-600 dark:text-gray-400 dark:group-hover:text-primary-500"
+          :class="
+            currentPath === ROUTING_URLS.ROUTES ? 'text-primary-600 dark:text-primary-500' : ''
+          "
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -73,6 +82,9 @@
 
         <span
           class="text-sm text-gray-500 group-hover:text-primary-600 dark:text-gray-400 dark:group-hover:text-primary-500"
+          :class="
+            currentPath === ROUTING_URLS.ROUTES ? 'text-primary-600 dark:text-primary-500' : ''
+          "
           >Trasy</span
         >
       </RouterLink>
@@ -82,5 +94,12 @@
 
 <script setup lang="ts">
 import { ROUTING_URLS } from '@/router'
-import { RouterLink } from 'vue-router'
+import { computed } from 'vue'
+import { RouterLink, useRoute } from 'vue-router'
+
+const route = useRoute()
+const currentPath = computed(() => {
+  console.log(route.path)
+  return route.path
+})
 </script>
