@@ -8,7 +8,7 @@ import {
   UserWithoutPassword,
   userToUserWithoutPassword,
 } from './entities/user.entity';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { HashService } from 'src/helpers/hash.service';
 
 @Injectable()
@@ -69,5 +69,38 @@ export class UsersService {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
     return {};
+  }
+
+  async addRoute(id: mongoose.Types.ObjectId, directions: any) {
+    const time = new Date().toISOString();
+    const { routeHistory } = await this.userModel.findById(id) as User
+    const updateDto = {
+      routeHistory: [...routeHistory, { timeStamp: time, directions }]
+    }
+    const user = await this.userModel.findByIdAndUpdate(id, updateDto, {new: true});
+    return userToUserWithoutPassword(user);
+  }
+
+  async getUserRoutes(id: mongoose.Types.ObjectId) {
+    const user = await this.userModel.findById(id) as User;
+    return user.routeHistory || [];
+  }
+
+  async clearRouteHistory(id: mongoose.Types.ObjectId) {
+    const updateDto = {
+      routeHistory: []
+    }
+    const user = await this.userModel.findByIdAndUpdate(id, updateDto, {new: true});
+    return userToUserWithoutPassword(user);
+  }
+
+  async deleteRouteByTimestamp(id: mongoose.Types.ObjectId, timestamp: string) {
+    const { routeHistory } = await this.userModel.findById(id) as User
+    const updatedRouteHistory = routeHistory.filter(route => route.timeStamp !== timestamp)
+    const updateDto = {
+      routeHistory: updatedRouteHistory
+    }
+    const user = await this.userModel.findByIdAndUpdate(id, updateDto, {new: true});
+    return userToUserWithoutPassword(user);
   }
 }

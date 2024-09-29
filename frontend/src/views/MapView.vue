@@ -8,6 +8,8 @@ import axios from 'axios'
 import { useQuery } from '@tanstack/vue-query'
 import polyline from '@mapbox/polyline'
 import Map from '@/components/LeafletMap.vue'
+import { useLocationStore } from '@/stores/location'
+import BaseButton from '@/components/BaseButton.vue'
 
 interface RouteResponse {
   code: string
@@ -20,23 +22,38 @@ interface RouteResponse {
   }>
 }
 
-// TODO replace with dynamic values
-const start = '19.984829,50.066164'
-const end = '19.936580,50.061430'
 const version = ref(0)
+const locationStore = useLocationStore()
 
 const fetchRouteData = async (): Promise<RouteResponse> => {
+  if (!locationStore.start || !locationStore.end) {
+    throw new Error('Start or end location is missing')
+  }
+
+  const startLat = locationStore.start?.y || locationStore.start?.raw?.lat
+  const startLng = locationStore.start?.x || locationStore.start?.raw?.lon
+  const endLat = locationStore.end?.y || locationStore.end?.raw?.lat
+  const endLng = locationStore.end?.x || locationStore.end?.raw?.lon
+
+  if (!startLat || !startLng || !endLat || !endLng) {
+    throw new Error('Invalid coordinates for start or end location')
+  }
+
+  const startCoordinates = `${startLng},${startLat}`
+  const endCoordinates = `${endLng},${endLat}`
+
   const response = await axios.get<RouteResponse>('http://localhost:3011/directions', {
     params: {
-      start: start,
-      end: end,
+      start: startCoordinates,
+      end: endCoordinates,
       mode: 'default'
     }
   })
+
   return response.data
 }
 
-const { data, isPending, error } = useQuery<RouteResponse>({
+const { data } = useQuery<RouteResponse>({
   queryKey: ['routeData'],
   queryFn: fetchRouteData
 })
@@ -45,7 +62,7 @@ const routeCoordinates = computed(() => {
   if (!data.value || !data.value.routes || !data.value.routes.length) return []
 
   const steps = data.value.routes[0].legs[0].steps
-  let coordinates: { lat: number; lng: number }[] = [] // Type for coordinates array
+  let coordinates: { lat: number; lng: number }[] = []
 
   steps.forEach((step) => {
     const decodedPath = polyline.decode(step.geometry)

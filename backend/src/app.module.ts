@@ -9,7 +9,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ScheduleModule } from '@nestjs/schedule';
 import { Co2Module } from './co2/co2.module';
 import { DirectionsModule } from './directions/directions.module';
+import { CurrentAccidentsModule } from './current-accidents/current-accidents.module';
 import { AccidentsModule } from './accidents/accidents.module';
+import { RouteSharingModule } from './route-sharing/route-sharing.module';
 
 @Module({
   imports: [
@@ -21,7 +23,9 @@ import { AccidentsModule } from './accidents/accidents.module';
     ScheduleModule.forRoot(),
     Co2Module,
     DirectionsModule,
+    CurrentAccidentsModule,
     AccidentsModule,
+    RouteSharingModule,
   ],
   controllers: [AppController],
   providers: [AppService],
