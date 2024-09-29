@@ -3,7 +3,7 @@ FROM ghcr.io/project-osrm/osrm-backend:v5.27.1
 WORKDIR /data
 
 COPY malopolskie-latest.osm.pbf ./
-COPY rower.lua ./
+COPY rower-sport.lua ./
 COPY lib ./lib
 
 RUN ls
@@ -19,10 +19,10 @@ RUN cd luarocks-3.11.1 && ./configure && make && make install && luarocks instal
 RUN luarocks install lua-resty-http
 
 
-RUN osrm-extract -p rower.lua malopolskie-latest.osm.pbf
+RUN osrm-extract -p rower-sport.lua malopolskie-latest.osm.pbf
 RUN osrm-partition malopolskie-latest.osrm
 RUN osrm-customize malopolskie-latest.osrm
 
 CMD osrm-routed --algorithm mld malopolskie-latest.osrm
 
-EXPOSE 5000
+EXPOSE 5001

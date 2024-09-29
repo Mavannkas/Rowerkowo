@@ -14,11 +14,11 @@
       <div class="w-full rounded-lg bg-white shadow sm:max-w-md md:mt-0 xl:p-0">
         <div class="space-y-4 p-6 sm:p-8 md:space-y-6">
           <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-            Create an account
+            Stwórz konto
           </h1>
           <form class="space-y-4 md:space-y-6" @submit.prevent="handleRegister">
             <BaseFormInput
-              label="Your email"
+              label="Twój email"
               type="email"
               id="email"
               autocomplete="email"
@@ -27,7 +27,7 @@
               v-model="email"
             />
             <BaseFormInput
-              label="Password"
+              label="Hasło"
               type="password"
               id="password"
               autocomplete="new-password"
@@ -37,7 +37,7 @@
               v-model="password"
             />
             <BaseFormInput
-              label="Confirm password"
+              label="Potwierdź hasło"
               type="password"
               id="confirm-password"
               autocomplete="new-password"
@@ -47,13 +47,13 @@
               v-model="confirmPassword"
             />
             <p v-if="!passwordMatch" class="mt-1 text-sm text-red-600 dark:text-red-500">
-              Passwords do not match!
+              Hasła nie są zgodne!
             </p>
             <p
               v-if="registerMutation.isError.value"
               class="mt-1 text-sm text-red-600 dark:text-red-500"
             >
-              An unknown error occured. See details in the console.
+              Wystąpił nieznany błąd. Zobacz szczegóły w konsoli.
             </p>
             <BaseSpinner v-if="registerMutation.isPending.value" />
             <BaseButton
@@ -61,15 +61,15 @@
               type="submit"
               class="w-full bg-primary-600 px-5 py-2.5 hover:bg-primary-700"
             >
-              Create an account
+              Stwórz konto
             </BaseButton>
 
             <p class="text-sm font-light text-gray-500">
-              Already have an account?
+              Masz już konto?
               <RouterLink
                 :to="ROUTING_URLS.LOGIN"
                 class="font-medium text-primary-600 hover:underline"
-                >Login here</RouterLink
+                >Zaloguj się tutaj</RouterLink
               >
             </p>
           </form>
@@ -78,6 +78,7 @@
     </div>
   </section>
 </template>
+
 <script setup lang="ts">
 import { ROUTING_URLS } from '@/router/index.js'
 import { useMutation } from '@tanstack/vue-query'
@@ -112,10 +113,10 @@ const registerMutation = useMutation({
   onError: (error) => {
     if (axios.isAxiosError(error)) {
       console.log(
-        `An unknown error occured: ${error.response?.status}, Message: ${error.response?.data.message}`
+        `Wystąpił nieznany błąd: ${error.response?.status}, Wiadomość: ${error.response?.data.message}`
       )
     } else {
-      console.log(`An unknown error occured: ${error.name}, Message: ${error.message}`)
+      console.log(`Wystąpił nieznany błąd: ${error.name}, Wiadomość: ${error.message}`)
     }
   }
 })
