@@ -23,38 +23,59 @@
           :id="`waypoint-${index}`"
           v-model="additionalWaypoints[index]"
         />
-        <button type="button" @click.prevent="addNewWaypoint">
-          <svg
-            width="24"
-            height="50"
-            viewBox="0 0 24 50"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <circle cx="12" cy="25" r="12" fill="#D9D9D9" />
-            <path d="M12 50L12 30" stroke="#D9D9D9" stroke-width="4" stroke-dasharray="4 4" />
-            <path
-              d="M12 20L12 8.9407e-07"
-              stroke="#D9D9D9"
-              stroke-width="4"
-              stroke-dasharray="4 4"
-            />
-            <path
-              d="M12 20V30"
-              stroke="black"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M7 25H17"
-              stroke="black"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </button>
+        <div class="flex justify-between">
+          <button type="button" @click.prevent="addNewWaypoint">
+            <svg
+              width="24"
+              height="50"
+              viewBox="0 0 24 50"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle cx="12" cy="25" r="12" fill="#D9D9D9" />
+              <path d="M12 50L12 30" stroke="#D9D9D9" stroke-width="4" stroke-dasharray="4 4" />
+              <path
+                d="M12 20L12 8.9407e-07"
+                stroke="#D9D9D9"
+                stroke-width="4"
+                stroke-dasharray="4 4"
+              />
+              <path
+                d="M12 20V30"
+                stroke="black"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M7 25H17"
+                stroke="black"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+          <button type="button" class="mr-1" @click.prevent="switchInputs">
+            <svg
+              class="h-6 w-6 text-gray-800 dark:text-white"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 20V10m0 10-3-3m3 3 3-3m5-13v10m0-10 3 3m-3-3-3 3"
+              />
+            </svg>
+          </button>
+        </div>
         <BaseSearchInput
           type="text"
           label="Dokąd jedziemy?"
@@ -149,6 +170,13 @@ const rideOptions = [
 
 const addNewWaypoint = () => {
   additionalWaypoints.value = [...additionalWaypoints.value, '']
+}
+
+const switchInputs = () => {
+  const destVal = destination.value
+  const startVal = startingPoint.value
+  startingPoint.value = destVal
+  destination.value = startVal
 }
 
 const getMappedValue = () => {

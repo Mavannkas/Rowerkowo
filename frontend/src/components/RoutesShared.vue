@@ -30,10 +30,6 @@
 </template>
 
 <script setup lang="ts">
-import { useAuthStore } from '@/stores/auth'
-import axios from 'axios'
-import { useQuery } from '@tanstack/vue-query'
-import { computed } from 'vue'
 import RoutesProfile from '@/components/RoutesProfile.vue'
 
 type Route = {
