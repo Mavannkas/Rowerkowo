@@ -6,7 +6,7 @@
       <a href="#" class="mb-6 flex items-center text-2xl font-semibold text-gray-900">
         <img
           class="mr-2 h-8 w-8"
-          src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
+          src="https://media.discordapp.net/attachments/1289507816708767778/1289790567647281153/rowerkowo.png?ex=66fa1a92&is=66f8c912&hm=cf8546cd4dfbd33ad7f592ccc05c6ef1e69901fcdd70b9c966fb1b1008539322&=&format=webp&quality=lossless&width=1160&height=1160"
           alt="logo"
         />
         Rowerkowo
@@ -91,7 +91,7 @@ const password = ref('')
 const loginMutation = useMutation({
   mutationFn: async ({ email, password }: { email: string; password: string }) => {
     const response = await axios.post<{ access_token: string }>(
-      'http://localhost:3011/auth/login',
+      'https://localhost:3011/auth/login',
       {
         username: email,
         password: password
