@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import { useLocalStorage } from '@vueuse/core'
 
 interface User {
   access_token: string
@@ -7,38 +8,32 @@ interface User {
 }
 
 export const useAuthStore = defineStore('auth', () => {
-  const user = ref<User | null>(null)
-  const isLoggedIn = ref<boolean>(localStorage.getItem('user') !== null)
+  // Automatically handles JSON.stringify and JSON.parse
+  const user = useLocalStorage<User | null>('user', null)
+  const isLoggedIn = ref<boolean>(!!user.value)
 
   const checkAuth = () => {
-    const savedUser = localStorage.getItem('user')
-
-    if (!savedUser) {
-      isLoggedIn.value = false
-      user.value = null
-      return
-    }
-
-    try {
-      user.value = JSON.parse(savedUser)
-      isLoggedIn.value = true
-    } catch (error) {
-      isLoggedIn.value = false
-      user.value = null
-    }
+    isLoggedIn.value = !!user.value
+    console.log('CheckAuth: User is', user.value)
   }
 
   const login = (userData: User) => {
-    user.value = userData
+    console.log('Logging in with:', userData)
+    user.value = userData // Will be automatically stringified and saved to local storage
     isLoggedIn.value = true
-    localStorage.setItem('user', JSON.stringify(user.value))
+    console.log('Stored user:', user.value)
   }
 
   const logout = () => {
+    console.log('Logging out.')
     user.value = null
     isLoggedIn.value = false
-    localStorage.removeItem('user')
   }
+
+  // Watch for any changes to `user` in localStorage
+  watch(user, (newUser) => {
+    console.log('User updated in localStorage:', newUser)
+  })
 
   return { user, isLoggedIn, checkAuth, login, logout }
 })
