@@ -81,6 +81,11 @@ export class UsersService {
     return userToUserWithoutPassword(user);
   }
 
+  async getUserRoutes(id: mongoose.Types.ObjectId) {
+    const user = await this.userModel.findById(id) as User;
+    return user.routeHistory || [];
+  }
+
   async clearRouteHistory(id: mongoose.Types.ObjectId) {
     const updateDto = {
       routeHistory: []

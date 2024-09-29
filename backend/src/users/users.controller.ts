@@ -58,6 +58,13 @@ export class UsersController {
 
   @Roles(UserRole.Admin, UserRole.User)
   @UseGuards(AuthGuard)
+  @Get('/routes')
+  getUserRoutes(@Request() req: ExpressRequest) {
+    return this.usersService.getUserRoutes(req.userPayload.sub);
+  }
+
+  @Roles(UserRole.Admin, UserRole.User)
+  @UseGuards(AuthGuard)
   @Delete('/routes')
   deleteRoutes(@Request() req: ExpressRequest) {
     return this.usersService.clearRouteHistory(req.userPayload.sub);
