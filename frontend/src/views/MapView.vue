@@ -105,10 +105,15 @@ const distance = computed(() => {
 const duration = computed(() => {
   if (!data.value || !data.value.routes || !data.value.routes.length) return ''
 
-  const duration = data.value.routes[0].legs[0].steps.reduce((acc, step) => acc + step.duration, 0)
-  const time = new Date()
-  time.setSeconds(duration)
-  const timeString = `${time.getHours()}h ${time.getMinutes()}m`
+  const totalDuration = data.value.routes[0].legs[0].steps.reduce(
+    (acc, step) => acc + step.duration,
+    0
+  )
+
+  const hours = Math.floor(totalDuration / 3600)
+  const minutes = Math.floor((totalDuration % 3600) / 60)
+
+  const timeString = `${hours}h ${minutes}m`
 
   return timeString
 })
