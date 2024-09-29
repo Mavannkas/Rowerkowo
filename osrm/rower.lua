@@ -233,7 +233,9 @@ function process_segment(profile, segment)
   -- print(start_lon)
   -- print(end_lat)
   -- print(end_lon)
-
+  if segment.distance < 100 then
+    return
+  end
   local co2 = get_co2(start_lat, start_lon, end_lat, end_lon)
   local accidents = get_accidents(start_lat, start_lon, end_lat, end_lon)
 
