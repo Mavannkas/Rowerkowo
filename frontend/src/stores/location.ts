@@ -8,15 +8,32 @@ export const useLocationStore = defineStore('location', () => {
   const start = ref<LocationSearchResult>()
   const end = ref<LocationSearchResult>()
   const mode = ref<string>('')
+  const startingPointNameRef = ref<string>('')
+  const destinationPointNameRef = ref<string>('')
 
   const update = (
     newStart: LocationSearchResult,
     newEnd: LocationSearchResult,
-    newMode: string
+    newMode: string,
+    startingPointName: string,
+    destinationPointName: string
   ) => {
     start.value = newStart
     end.value = newEnd
     mode.value = newMode
+    startingPointNameRef.value = startingPointName
+    destinationPointNameRef.value = destinationPointName
+    localStorage.setItem('startingPointName', startingPointName)
+    localStorage.setItem('destinationPointName', destinationPointName)
+  }
+
+  const getSearchData = () => {
+    startingPointNameRef.value = localStorage.getItem('startingPointName') || ''
+    destinationPointNameRef.value = localStorage.getItem('destinationPointName') || ''
+    return {
+      startingPointName: startingPointNameRef.value,
+      destinationPointName: destinationPointNameRef.value
+    }
   }
 
   const updateRoutes = async (routes: unknown, token: string) => {
@@ -33,5 +50,5 @@ export const useLocationStore = defineStore('location', () => {
     }
   }
 
-  return { start, end, update, updateRoutes, mode }
+  return { start, end, update, updateRoutes, mode, getSearchData }
 })

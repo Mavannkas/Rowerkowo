@@ -93,7 +93,7 @@ import BaseButton from '@/components/BaseButton.vue'
 import BaseSearchInput from '@/components/BaseSearchInput.vue'
 import { getCurrentGeolocation } from '@/helpers/getCurrentGeolocation'
 import { getPointData } from '@/helpers/getPointData'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useLocationStore } from '@/stores/location'
 import { useRouter } from 'vue-router'
 import { ROUTING_URLS } from '@/router'
@@ -111,6 +111,12 @@ const withChildren = ref(false)
 const avoidNationalRoads = ref(false)
 const locationStore = useLocationStore()
 const router = useRouter()
+
+onMounted(() => {
+  const data = locationStore.getSearchData()
+  startingPoint.value = data.startingPointName
+  destination.value = data.destinationPointName
+})
 
 const bikeOptions = [
   {
@@ -190,7 +196,13 @@ const handleSearchForm = async () => {
     if (!startingPointData || !destinationData) {
       throw new Error('No data')
     }
-    locationStore.update(startingPointData, destinationData, filterValue.value)
+    locationStore.update(
+      startingPointData,
+      destinationData,
+      filterValue.value,
+      startingPoint.value,
+      destination.value
+    )
     void router.push(ROUTING_URLS.MAP)
   } catch (error) {
     console.error(error)
