@@ -13,7 +13,7 @@ export class DirectionsService {
 
     console.log(osrmUrl);
 
-    const callUrl = `${osrmUrl}/trip/v1/driving/${stops}?overview=false&steps=true&annotations=true&source=first&destination=last`;
+    const callUrl = `${osrmUrl}/trip/v1/driving/${stops}?overview=false&steps=true&annotations=distance,duration&source=first&destination=last`;
 
     const osmrResp = await this.httpService.axiosRef.get(callUrl);
 
@@ -29,7 +29,7 @@ export class DirectionsService {
 
     console.log(osrmUrl);
 
-    const callUrl = `${osrmUrl}/route/v1/driving/${start};${end}?overview=false&steps=true&annotations=true`;
+    const callUrl = `${osrmUrl}/route/v1/driving/${start};${end}?overview=false&steps=true&annotations=distance,duration`;
 
     const osmrResp = await this.httpService.axiosRef.get(callUrl);
 
