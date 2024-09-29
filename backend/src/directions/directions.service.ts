@@ -14,7 +14,7 @@ export class DirectionsService {
     console.log(osrmUrl);
     console.log(stops);
 
-    const callUrl = `${osrmUrl}/trip/v1/driving/${stops}?overview=false&steps=true&annotations=distance,duration&source=first&destination=last`;
+    const callUrl = `${osrmUrl}/trip/v1/driving/${stops}?overview=false&steps=true&annotations=distance,duration&source=first&destination=last&roundtrip=false`;
 
     const osmrResp = await this.httpService.axiosRef.get(callUrl);
 

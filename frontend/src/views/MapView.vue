@@ -86,14 +86,14 @@ const handleShare = () => {
   if (!startLat || !startLng || !endLat || !endLng) {
     throw new Error('Invalid coordinates for start or end location')
   }
-
+  const {startingPointName, destinationPointName} = locationStore.getSearchData()
   void axios.post(
-    'http://localhost:3011/routes/shared',
+    'http://localhost:3011/route-sharing',
     {
       route: routeData,
       name: tripTitle.value,
-      start: `${startLng},${startLat}`,
-      finish: `${endLng},${endLat}`,
+      start: startingPointName.split(',')[0],
+      finish: destinationPointName.split(',')[0],
       tags: [''] // Na razie nie implementujemy
     },
     {
@@ -166,7 +166,7 @@ const { data } = useQuery<RouteResponse>({
 const routeCoordinates = computed(() => {
   if (!data.value || !data.value.routes || !data.value.routes.length) return []
 
-  const steps = data.value.routes[0].legs[0].steps
+  const steps = data.value.routes[0].legs.flatMap((leg) => leg.steps)
   let coordinates: { lat: number; lng: number; isWaypoint: boolean }[] = []
 
   steps.forEach((step) => {
@@ -177,8 +177,8 @@ const routeCoordinates = computed(() => {
         lng: point[1],
         isWaypoint:
           locationStore.mid?.some(
-            (midPoint) => midPoint.x === point[1] && midPoint.y === point[0]
-          ) || false
+            (midPoint) => midPoint.x == point[1] && midPoint.y == point[0]
+          ) || false || false
       }))
     )
   })
@@ -189,14 +189,14 @@ const routeCoordinates = computed(() => {
 const distance = computed(() => {
   if (!data.value || !data.value.routes || !data.value.routes.length) return ''
 
-  const distance = data.value.routes[0].legs[0].steps.reduce((acc, step) => acc + step.distance, 0)
+  const distance = data.value.routes[0].legs.flatMap(leg => leg.steps).reduce((acc, step) => acc + step.distance, 0)
 
   return `${(distance / 1000).toFixed(2)} km`
 })
 const duration = computed(() => {
   if (!data.value || !data.value.routes || !data.value.routes.length) return ''
 
-  const totalDuration = data.value.routes[0].legs[0].steps.reduce(
+  const totalDuration = data.value.routes[0].legs.flatMap(leg => leg.steps).reduce(
     (acc, step) => acc + step.duration,
     0
   )

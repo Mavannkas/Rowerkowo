@@ -91,7 +91,7 @@ const password = ref('')
 const loginMutation = useMutation({
   mutationFn: async ({ email, password }: { email: string; password: string }) => {
     const response = await axios.post<{ access_token: string }>(
-      'https://localhost:3011/auth/login',
+      'http://localhost:3011/auth/login',
       {
         username: email,
         password: password

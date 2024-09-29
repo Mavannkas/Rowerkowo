@@ -47,7 +47,7 @@ type Route = {
 }
 
 const getUserRoutes = async () => {
-  const response = await axios.get('http://localhost:3011/routes/shared', {
+  const response = await axios.get('http://localhost:3011/route-sharing', {
     headers: {
       Authorization: `Bearer ${authStore.user?.access_token}`
     }
@@ -63,22 +63,5 @@ const { data } = useQuery({
 // ZONACZ JAK WYGLADA I DAWAJ, zamiec z routes
 console.log(data)
 
-const routes: Route[] = [
-  {
-    route: 'fuck it',
-    name: 'STILL HAD HOPE',
-    start: 'KRAKOW tauron arena',
-    finish: 'dworzec kurwa glowny',
-    tags: ['tag1', 'tag2'],
-    createdBy: 'pizdeusz'
-  },
-  {
-    route: 'suck it',
-    name: 'podroz meczennika',
-    start: 'wroclaw',
-    finish: 'spierdalam do domu',
-    tags: ['tag3', 'tag4'],
-    createdBy: 'kutasiarz'
-  }
-]
+const routes = data
 </script>
