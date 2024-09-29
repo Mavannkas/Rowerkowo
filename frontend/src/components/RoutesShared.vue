@@ -31,6 +31,11 @@
 
 <script setup lang="ts">
 import RoutesProfile from '@/components/RoutesProfile.vue'
+import axios from 'axios'
+import { useAuthStore } from '@/stores/auth'
+import { useQuery } from '@tanstack/vue-query'
+
+const authStore = useAuthStore()
 
 type Route = {
   route: unknown
@@ -41,16 +46,22 @@ type Route = {
   createdBy: string
 }
 
-//
-// const getUserRoutes = async () => {
-//   const response = await axios.get(`http://localhost:3011/route/${userEmail.value}`)
-//   return response.data
-// }
-//
-// const { data } = useQuery({
-//   queryKey: ['routes', authStore.user?.email],
-//   queryFn: getUserRoutes
-// })
+const getUserRoutes = async () => {
+  const response = await axios.get('http://localhost:3011/routes/shared', {
+    headers: {
+      Authorization: `Bearer ${authStore.user?.access_token}`
+    }
+  })
+  return response.data
+}
+
+const { data } = useQuery({
+  queryKey: ['routes'],
+  queryFn: getUserRoutes
+})
+
+// ZONACZ JAK WYGLADA I DAWAJ, zamiec z routes
+console.log(data)
 
 const routes: Route[] = [
   {

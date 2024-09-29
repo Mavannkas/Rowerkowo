@@ -1,6 +1,8 @@
 <template>
   <div>
-    <label :for="id" class="mb-2 block text-sm font-medium text-gray-900">{{ label }}</label>
+    <label v-if="label" :for="id" class="mb-2 block text-sm font-medium text-gray-900">{{
+      label
+    }}</label>
     <input
       :type
       :name="id"
@@ -22,7 +24,7 @@
 
 <script setup lang="ts">
 defineProps<{
-  label: string
+  label?: string
   type: string
   id: string
   placeholder: string

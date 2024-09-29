@@ -1,12 +1,46 @@
 <template>
   <Map :key="version" :coordinates="routeCoordinates" />
-  <div class="flex h-[8%] items-center justify-around">
+
+  <div v-if="activeState === 'data'" class="flex h-[8%] items-center justify-around">
     <p v-if="distance !== ''" class="text-lg">
       Dystans: <span class="font-bold text-primary-600">{{ distance }}</span>
     </p>
     <p v-if="duration !== ''" class="text-lg">
       Czas: <span class="font-bold text-primary-600">{{ duration }}</span>
     </p>
+    <button
+      v-if="authStore.user?.email"
+      type="button"
+      class="text-primary relative h-[52px] w-[52px] rounded-lg bg-white shadow-sm focus:outline-none focus:ring-4 focus:ring-gray-300"
+      @click="activeState = 'share'"
+    >
+      <svg
+        class="mx-auto h-5 w-5"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="currentColor"
+        viewBox="0 0 18 18"
+      >
+        <path
+          d="M14.419 10.581a3.564 3.564 0 0 0-2.574 1.1l-4.756-2.49a3.54 3.54 0 0 0 .072-.71 3.55 3.55 0 0 0-.043-.428L11.67 6.1a3.56 3.56 0 1 0-.831-2.265c.006.143.02.286.043.428L6.33 6.218a3.573 3.573 0 1 0-.175 4.743l4.756 2.491a3.58 3.58 0 1 0 3.508-2.871Z"
+        />
+      </svg>
+    </button>
+  </div>
+
+  <div v-if="activeState === 'share'" class="flex h-[8%] items-center justify-around">
+    <BaseFormInput
+      type="text"
+      id="text"
+      placeholder="Wpisz tytuł wycieczki"
+      required
+      v-model="tripTitle"
+    />
+    <BaseButton @click="handleShare"> Udostępnij </BaseButton>
+  </div>
+
+  <div v-if="activeState === 'shared'" class="flex h-[8%] items-center justify-around">
+    <p class="text-lg">Wycieczka została udostępniona!</p>
   </div>
 </template>
 
@@ -17,6 +51,9 @@ import { useQuery } from '@tanstack/vue-query'
 import polyline from '@mapbox/polyline'
 import Map from '@/components/LeafletMap.vue'
 import { useLocationStore } from '@/stores/location'
+import BaseFormInput from '@/components/BaseFormInput.vue'
+import BaseButton from '@/components/BaseButton.vue'
+import { useAuthStore } from '@/stores/auth'
 
 interface RouteResponse {
   code: string
@@ -33,6 +70,39 @@ interface RouteResponse {
 
 const version = ref(0)
 const locationStore = useLocationStore()
+const activeState = ref<'data' | 'share' | 'shared'>('data')
+const tripTitle = ref('')
+const authStore = useAuthStore()
+let routeData: RouteResponse | null = null
+
+const handleShare = () => {
+  activeState.value = 'shared'
+
+  const startLat = locationStore.start?.y
+  const startLng = locationStore.start?.x
+  const endLat = locationStore.end?.y
+  const endLng = locationStore.end?.x
+
+  if (!startLat || !startLng || !endLat || !endLng) {
+    throw new Error('Invalid coordinates for start or end location')
+  }
+
+  void axios.post(
+    'http://localhost:3011/routes/shared',
+    {
+      route: routeData,
+      name: tripTitle.value,
+      start: `${startLng},${startLat}`,
+      finish: `${endLng},${endLat}`,
+      tags: [''] // Na razie nie implementujemy
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${authStore.user?.access_token}`
+      }
+    }
+  )
+}
 
 const fetchRouteData = async (): Promise<RouteResponse> => {
   if (
@@ -66,6 +136,7 @@ const fetchRouteData = async (): Promise<RouteResponse> => {
     }
   })
 
+  routeData = response.data
   return response.data
 }
 
@@ -98,9 +169,7 @@ const distance = computed(() => {
 
   const distance = data.value.routes[0].legs[0].steps.reduce((acc, step) => acc + step.distance, 0)
 
-  const distanceString = `${(distance / 1000).toFixed(2)} km`
-
-  return distanceString
+  return `${(distance / 1000).toFixed(2)} km`
 })
 const duration = computed(() => {
   if (!data.value || !data.value.routes || !data.value.routes.length) return ''
@@ -113,9 +182,7 @@ const duration = computed(() => {
   const hours = Math.floor(totalDuration / 3600)
   const minutes = Math.floor((totalDuration % 3600) / 60)
 
-  const timeString = `${hours}h ${minutes}m`
-
-  return timeString
+  return `${hours}h ${minutes}m`
 })
 
 watch(routeCoordinates, () => {
