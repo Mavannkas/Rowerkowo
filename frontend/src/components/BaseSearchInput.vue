@@ -1,7 +1,7 @@
 <template>
   <div class="relative">
     <label :for="id" class="mb-2 block text-sm font-medium text-gray-900">{{ label }}</label>
-    <div class="relative">
+    <div class="relative mb-1">
       <input
         :type
         :name="id"
@@ -18,20 +18,20 @@
         @click="handleGeoEmit"
         :class="isGeolocated ? 'text-primary-600' : ''"
       />
-    </div>
-    <ul
-      v-if="inputVisible && results.length"
-      class="absolute left-1/2 top-full z-10 w-full -translate-x-1/2 rounded-lg rounded-t-none border-2 border-t-0 border-gray-300 bg-white"
-    >
-      <li
-        v-for="result of results"
-        :key="result.raw.osm_id"
-        @click="handleResultClick(result.label)"
-        class="line-clamp-1 cursor-pointer border-b border-gray-300 p-2 leading-8"
+      <ul
+        v-if="inputVisible && results.length"
+        class="absolute left-1/2 top-full z-10 w-full -translate-x-1/2 rounded-lg rounded-t-none border-2 border-t-0 border-gray-300 bg-white"
       >
-        {{ result.label }}
-      </li>
-    </ul>
+        <li
+          v-for="result of results"
+          :key="result.raw.osm_id"
+          @click="handleResultClick(result.label)"
+          class="line-clamp-1 cursor-pointer border-b border-gray-300 p-2 leading-8"
+        >
+          {{ result.label }}
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -47,11 +47,12 @@ import { getGeolocationPermission } from '@/helpers/getGeolocationPermission'
 import { getCurrentGeolocation } from '@/helpers/getCurrentGeolocation'
 
 defineProps<{
-  label: string
+  label?: string
   type: string
   id: string
-  placeholder: string
+  placeholder?: string
   geoInput?: boolean
+  query?: string
 }>()
 
 defineOptions({
@@ -73,7 +74,7 @@ watchDebounced(
       console.error(error)
     }
   },
-  { debounce: 500 }
+  { debounce: 200 }
 )
 
 const handleGeoEmit = async () => {

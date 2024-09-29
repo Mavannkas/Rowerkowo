@@ -2,22 +2,66 @@
   <div class="flex h-full flex-col p-6">
     <h1 class="mb-4 text-3xl font-bold">Wyszukaj trasę</h1>
     <form class="flex flex-1 flex-col gap-6">
-      <BaseSearchInput
-        type="text"
-        label="Skąd jedziemy?"
-        id="startingPoint"
-        placeholder="Kraków Główny"
-        v-model="startingPoint"
-        geo-input
-        @geolocation="(value) => (isGeolocated = value)"
-      />
-      <BaseSearchInput
-        type="text"
-        label="Dokąd jedziemy?"
-        id="destination"
-        placeholder="TAURON Arena Kraków"
-        v-model="destination"
-      />
+      <div class="flex flex-col gap-y-2">
+        <BaseSearchInput
+          type="text"
+          label="Skąd jedziemy?"
+          id="startingPoint"
+          placeholder="Kraków Główny"
+          query="startingPoint"
+          v-model="startingPoint"
+          geo-input
+          @geolocation="(value) => (isGeolocated = value)"
+        />
+        <BaseSearchInput
+          v-for="(waypoint, index) in additionalWaypoints"
+          :key="index"
+          type="text"
+          label="Punkt pośredni"
+          :id="`waypoint-${index}`"
+          v-model="additionalWaypoints[index]"
+        />
+        <button type="button" @click.prevent="addNewWaypoint">
+          <svg
+            width="24"
+            height="50"
+            viewBox="0 0 24 50"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle cx="12" cy="25" r="12" fill="#D9D9D9" />
+            <path d="M12 50L12 30" stroke="#D9D9D9" stroke-width="4" stroke-dasharray="4 4" />
+            <path
+              d="M12 20L12 8.9407e-07"
+              stroke="#D9D9D9"
+              stroke-width="4"
+              stroke-dasharray="4 4"
+            />
+            <path
+              d="M12 20V30"
+              stroke="black"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M7 25H17"
+              stroke="black"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+        <BaseSearchInput
+          type="text"
+          label="Dokąd jedziemy?"
+          id="destination"
+          query="destination"
+          placeholder="TAURON Arena Kraków"
+          v-model="destination"
+        />
+      </div>
       <div class="flex gap-4">
         <BaseDropdown
           class="w-1/2"
@@ -60,6 +104,7 @@ const startingPoint = ref('')
 const destination = ref('')
 const bikeOption = ref('')
 const rideOption = ref('')
+const additionalWaypoints = ref<string[]>([])
 const withChildren = ref(false)
 const avoidNationalRoads = ref(false)
 const locationStore = useLocationStore()
@@ -94,6 +139,10 @@ const rideOptions = [
   }
 ]
 
+const addNewWaypoint = () => {
+  additionalWaypoints.value = [...additionalWaypoints.value, '']
+}
+
 const handleSearchForm = async () => {
   try {
     let startingPointData: { x: number; y: number } | undefined
@@ -107,6 +156,13 @@ const handleSearchForm = async () => {
 
     const destinationResponse = await getPointData(destination.value)
 
+    const additionalWaypointsData = []
+
+    for (const waypoint of additionalWaypoints.value) {
+      const res = await getPointData(waypoint)
+      additionalWaypointsData.push({ x: res[0].x, y: res[0].y })
+    }
+
     const destinationData = { x: destinationResponse[0].x, y: destinationResponse[0].y }
     if (!startingPointData || !destinationData) {
       throw new Error('No data')
@@ -115,6 +171,7 @@ const handleSearchForm = async () => {
     locationStore.update(startingPointData, destinationData)
     void router.push(ROUTING_URLS.MAP)
 
+    console.log(additionalWaypointsData)
     console.log(startingPointData)
     console.log(destinationData)
     console.log('Kamil działaj :)')
