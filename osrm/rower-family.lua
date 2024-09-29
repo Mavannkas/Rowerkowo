@@ -338,6 +338,10 @@ function handle_bicycle_tags(profile, way, result, data)
 
   bike_push_handler(profile, way, result, data)
 
+  if data.surface and profile.surface_speeds[data.surface]  then
+    result.forward_speed = profile.surface_speeds[data.surface]
+    result.backward_speed = profile.surface_speeds[data.surface]
+  end
 
   -- maxspeed
   limit(result, data.maxspeed, data.maxspeed_forward, data.maxspeed_backward)

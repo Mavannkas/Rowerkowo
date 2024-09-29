@@ -327,6 +327,7 @@ function handle_bicycle_tags(profile, way, result, data)
   data.foot_forward = way:get_value_by_key("foot:forward")
   data.foot_backward = way:get_value_by_key("foot:backward")
   data.bicycle = way:get_value_by_key("bicycle")
+  data.surface = way:get_value_by_key("surface")
 
   speed_handler(profile, way, result, data)
 
@@ -336,9 +337,16 @@ function handle_bicycle_tags(profile, way, result, data)
 
   bike_push_handler(profile, way, result, data)
 
+  if data.surface and profile.surface_speeds[data.surface]  then
+    result.forward_speed = profile.surface_speeds[data.surface]
+    result.backward_speed = profile.surface_speeds[data.surface]
+  end
 
   -- maxspeed
   limit(result, data.maxspeed, data.maxspeed_forward, data.maxspeed_backward)
+  
+  
+  
 
   -- not routable if no speed assigned
   -- this avoid assertions in debug builds
