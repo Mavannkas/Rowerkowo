@@ -145,36 +145,28 @@ const addNewWaypoint = () => {
   additionalWaypoints.value = [...additionalWaypoints.value, '']
 }
 
-const mappingData = [
-  {
-    value: 'sport',
-    condition:
-      (bikeOption.value === 'mountainBike' || bikeOption.value === 'roadBike') &&
-      rideOption.value === 'trainingRide' &&
-      !withChildren.value &&
-      !avoidNationalRoads.value
-  },
-  {
-    value: 'family',
-    condition:
-      bikeOption.value === 'cityBike' &&
-      (rideOption.value === 'recreationalRide' || rideOption.value === 'cityRide') &&
-      withChildren.value
-  }
-]
-
 const getMappedValue = () => {
-  for (let mapping of mappingData) {
-    if (mapping.condition) {
-      return mapping.value
-    }
+  if (
+    bikeOption.value === 'cityBike' &&
+    (rideOption.value === 'recreationalRide' || rideOption.value === 'cityRide') &&
+    withChildren.value
+  ) {
+    return 'family'
+  }
+  if (
+    (bikeOption.value === 'mountainBike' || bikeOption.value === 'roadBike') &&
+    rideOption.value === 'trainingRide' &&
+    !withChildren.value && // Bez dzieci
+    !avoidNationalRoads.value
+  ) {
+    return 'sport'
   }
   return 'default'
 }
-
-const filterValue = getMappedValue()
+const filterValue = ref('default')
 
 const handleSearchForm = async () => {
+  filterValue.value = getMappedValue()
   try {
     let startingPointData: { x: number; y: number } | undefined
 
@@ -198,15 +190,8 @@ const handleSearchForm = async () => {
     if (!startingPointData || !destinationData) {
       throw new Error('No data')
     }
-
-    locationStore.update(startingPointData, destinationData, filterValue)
+    locationStore.update(startingPointData, destinationData, filterValue.value)
     void router.push(ROUTING_URLS.MAP)
-
-    console.log(additionalWaypointsData)
-    console.log(startingPointData)
-    console.log(destinationData)
-
-    // TODO - Send data to backend
   } catch (error) {
     console.error(error)
   }
