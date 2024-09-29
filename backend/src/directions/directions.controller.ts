@@ -10,4 +10,9 @@ export class DirectionsController {
   findRoute(@Query('start') start: string, @Query('end') end: string, @Query('mode') mode?: RoutingMode) {
     return this.directionsService.findRoute(start, end, mode);
   }
+
+  @Get('/trip')
+  findTrip(@Query('stops') stops: string, @Query('mode') mode?: RoutingMode) {
+    return this.directionsService.findTrip(stops, mode);
+  }
 }
