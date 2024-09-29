@@ -91,7 +91,7 @@ const handleShare = () => {
     'http://localhost:3011/route-sharing',
     {
       route: routeData,
-      name: tripTitle.value,
+      name: tripTitle.value || 'Bez nazwy',
       start: startingPointName.split(',')[0],
       finish: destinationPointName.split(',')[0],
       tags: [''] // Na razie nie implementujemy
@@ -141,10 +141,17 @@ const fetchRouteData = async (): Promise<RouteResponse> => {
         mode: locationStore.mode
       }
     })
+
+    routeData = {
+      ...response.data,
+      routes: response.data?.trips
+    }
+
     return {
       ...response.data,
       routes: response.data?.trips
     }
+
   }
   const response = await axios.get<RouteResponse>('http://localhost:3011/directions', {
     params: {
