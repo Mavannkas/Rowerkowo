@@ -32,8 +32,10 @@
           @update:model-value="(value: string) => (rideOption = value)"
         />
       </div>
-      <BaseCheckbox v-model="withChildren">Jadę z dzieckiem</BaseCheckbox>
-      <BaseCheckbox v-model="avoidNationalRoads">Omiń drogi krajowe</BaseCheckbox>
+      <BaseCheckbox id="withChildren" v-model="withChildren">Jadę z dzieckiem</BaseCheckbox>
+      <BaseCheckbox id="nationalRoads" v-model="avoidNationalRoads"
+        >Omiń drogi krajowe</BaseCheckbox
+      >
       <BaseButton class="mt-auto" type="submit" @click.prevent="handleSearchForm"
         >Znajdź najlepszą trasę
       </BaseButton>
