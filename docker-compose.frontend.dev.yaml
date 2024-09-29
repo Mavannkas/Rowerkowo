@@ -26,7 +26,7 @@ services:
       - mongo-data:/data/db
 
   osmr:
-    build: ./osrm
+    image: osmr_default_bicycle:latest
     container_name: osmr_basic_bicycle
     restart: always
     depends_on:

@@ -25,7 +25,7 @@ export class DirectionsService {
 
     console.log(osrmUrl);
 
-    const callUrl = `${osrmUrl}/route/v1/driving/${start};${end}?overview=false&steps=true`;
+    const callUrl = `${osrmUrl}/route/v1/driving/${start};${end}?overview=false&steps=true&annotations=distance,duration`;
 
     const osmrResp = await this.httpService.axiosRef.get(callUrl);
 
