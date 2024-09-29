@@ -1,6 +1,7 @@
 <template>
-  <div class="p-6">
-    <form class="flex flex-col gap-4">
+  <div class="flex h-full flex-col p-6">
+    <h1 class="mb-4 text-3xl font-bold">Wyszukaj trasę</h1>
+    <form class="flex flex-1 flex-col gap-6">
       <BaseSearchInput
         type="text"
         label="Skąd jedziemy?"
@@ -17,7 +18,23 @@
         placeholder="TAURON Arena Kraków"
         v-model="destination"
       />
-      <BaseButton type="submit" @click.prevent="handleSearchForm"
+      <div class="flex gap-4">
+        <BaseDropdown
+          class="w-1/2"
+          placeholder="Typ roweru"
+          :options="bikeOptions"
+          @update:model-value="(value: string) => (bikeOption = value)"
+        />
+        <BaseDropdown
+          class="w-1/2"
+          placeholder="Styl jazdy"
+          :options="rideOptions"
+          @update:model-value="(value: string) => (rideOption = value)"
+        />
+      </div>
+      <BaseCheckbox v-model="withChildren">Jadę z dzieckiem</BaseCheckbox>
+      <BaseCheckbox v-model="avoidNationalRoads">Omiń drogi krajowe</BaseCheckbox>
+      <BaseButton class="mt-auto" type="submit" @click.prevent="handleSearchForm"
         >Znajdź najlepszą trasę
       </BaseButton>
     </form>
@@ -32,13 +49,48 @@ import { ref } from 'vue'
 import { useLocationStore } from '@/stores/location'
 import { useRouter } from 'vue-router'
 import { ROUTING_URLS } from '@/router'
+import BaseCheckbox from '@/components/BaseCheckbox.vue'
+import BaseDropdown from '@/components/BaseDropdown.vue'
 
 const isGeolocated = ref(false)
 
 const startingPoint = ref('')
 const destination = ref('')
+const bikeOption = ref('')
+const rideOption = ref('')
+const withChildren = ref(false)
+const avoidNationalRoads = ref(false)
 const locationStore = useLocationStore()
 const router = useRouter()
+
+const bikeOptions = [
+  {
+    label: 'Rower miejski',
+    value: 'cityBike'
+  },
+  {
+    label: 'Rower górski',
+    value: 'mountainBike'
+  },
+  {
+    label: 'Rower szosowy',
+    value: 'roadBike'
+  }
+]
+const rideOptions = [
+  {
+    label: 'Jazda rekreacyjna',
+    value: 'recreationalRide'
+  },
+  {
+    label: 'Jazda treningowa',
+    value: 'trainingRide'
+  },
+  {
+    label: 'Jazda miejska',
+    value: 'cityRide'
+  }
+]
 
 const handleSearchForm = async () => {
   try {
