@@ -9,6 +9,7 @@ export class Co2Controller {
 
   @Get()
   getAirQualityNearToRoad(@Query() query: AirQualityNearToRoadDto) {
+    console.log(`co2: ${JSON.stringify(query)}`);
     return this.co2Service.getAirQualityNearRoad(query);
   }
 }

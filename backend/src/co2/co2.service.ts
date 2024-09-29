@@ -91,6 +91,7 @@ export class Co2Service {
     console.log('Saving data to database');
     for (let record of data) {
       const co2 = new this.co2Model({ ...record });
+    
       await co2.save();
     }
     console.log('Data saved successfully');
