@@ -6,7 +6,6 @@ export enum ROUTING_URLS {
   SEARCH = '/',
   MAP = '/map',
   ROUTES = '/routes',
-  ACCOUNT = '/account',
   LOGIN = '/login',
   REGISTER = '/register'
 }
@@ -29,11 +28,6 @@ const router = createRouter({
       name: 'routes',
       component: () => import('../views/RoutesView.vue'),
       meta: { requiresAuth: true }
-    },
-    {
-      path: ROUTING_URLS.ACCOUNT,
-      name: 'account',
-      component: () => import('../views/AccountView.vue')
     },
     {
       path: ROUTING_URLS.LOGIN,

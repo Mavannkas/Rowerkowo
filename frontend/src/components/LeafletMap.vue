@@ -1,6 +1,9 @@
 <template>
-  <div :style="{ height: '100%' }">
+  <div :style="{ height: '92%' }">
     <div id="map" :style="{ height: '100%' }"></div>
+  </div>
+  <div>
+    <!--    <BaseFormInput id="" label="" placeholder="" type="" />-->
   </div>
 </template>
 
@@ -8,6 +11,7 @@
 import 'leaflet/dist/leaflet.css'
 import * as L from 'leaflet'
 import { onMounted, ref } from 'vue'
+import BaseFormInput from '@/components/BaseFormInput.vue'
 
 const KRAKOW_LAT = 50.0647
 const KRAKOW_LNG = 19.9447

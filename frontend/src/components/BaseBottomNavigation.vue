@@ -2,7 +2,7 @@
   <div
     class="sticky bottom-0 left-0 z-50 mt-auto h-16 min-h-16 w-full border-t border-gray-200 bg-white dark:border-gray-600 dark:bg-gray-700"
   >
-    <div class="mx-auto grid h-full max-w-lg grid-cols-4 font-medium">
+    <div class="mx-auto grid h-full max-w-lg grid-cols-3 font-medium">
       <RouterLink
         :to="ROUTING_URLS.SEARCH"
         class="group inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800"
@@ -74,26 +74,6 @@
         <span
           class="text-sm text-gray-500 group-hover:text-primary-600 dark:text-gray-400 dark:group-hover:text-primary-500"
           >Trasy</span
-        >
-      </RouterLink>
-      <RouterLink
-        :to="ROUTING_URLS.ACCOUNT"
-        class="group inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800"
-      >
-        <svg
-          class="mb-1 h-5 w-5 text-gray-500 group-hover:text-primary-600 dark:text-gray-400 dark:group-hover:text-primary-500"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-        >
-          <path
-            d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z"
-          />
-        </svg>
-        <span
-          class="text-sm text-gray-500 group-hover:text-primary-600 dark:text-gray-400 dark:group-hover:text-primary-500"
-          >Konto</span
         >
       </RouterLink>
     </div>
