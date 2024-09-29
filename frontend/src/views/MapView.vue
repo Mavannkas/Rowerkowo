@@ -46,7 +46,7 @@ const fetchRouteData = async (): Promise<RouteResponse> => {
     params: {
       start: startCoordinates,
       end: endCoordinates,
-      mode: 'default'
+      mode: locationStore.mode
     }
   })
 

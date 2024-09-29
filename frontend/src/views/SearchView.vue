@@ -173,7 +173,6 @@ const getMappedValue = () => {
 }
 
 const filterValue = getMappedValue()
-console.log(filterValue)
 
 const handleSearchForm = async () => {
   try {
@@ -200,7 +199,7 @@ const handleSearchForm = async () => {
       throw new Error('No data')
     }
 
-    locationStore.update(startingPointData, destinationData)
+    locationStore.update(startingPointData, destinationData, filterValue)
     void router.push(ROUTING_URLS.MAP)
 
     console.log(additionalWaypointsData)

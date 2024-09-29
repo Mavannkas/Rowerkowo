@@ -7,10 +7,16 @@ export type LocationSearchResult = { x: number; y: number }
 export const useLocationStore = defineStore('location', () => {
   const start = ref<LocationSearchResult>()
   const end = ref<LocationSearchResult>()
+  const mode = ref<string>('')
 
-  const update = (newStart: LocationSearchResult, newEnd: LocationSearchResult) => {
+  const update = (
+    newStart: LocationSearchResult,
+    newEnd: LocationSearchResult,
+    newMode: string
+  ) => {
     start.value = newStart
     end.value = newEnd
+    mode.value = newMode
   }
 
   const updateRoutes = async (routes: unknown, token: string) => {
@@ -27,5 +33,5 @@ export const useLocationStore = defineStore('location', () => {
     }
   }
 
-  return { start, end, update, updateRoutes }
+  return { start, end, update, updateRoutes, mode }
 })
