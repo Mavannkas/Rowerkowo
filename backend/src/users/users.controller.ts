@@ -8,12 +8,16 @@ import {
   Delete,
   HttpCode,
   Request,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { Request as ExpressRequest } from 'express';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { Roles } from 'src/auth/roles.decorator';
+import { UserRole } from './entities/user.entity';
 
 @Controller('users')
 export class UsersController {
@@ -45,16 +49,22 @@ export class UsersController {
     return this.usersService.remove(id);
   }
 
+  @Roles(UserRole.Admin, UserRole.User)
+  @UseGuards(AuthGuard)
   @Post('/route')
   addRoute(@Request() req: ExpressRequest, @Body() route: any) {
     return this.usersService.addRoute(req.userPayload.sub, route);
   }
 
+  @Roles(UserRole.Admin, UserRole.User)
+  @UseGuards(AuthGuard)
   @Delete('/routes')
   deleteRoutes(@Request() req: ExpressRequest) {
     return this.usersService.clearRouteHistory(req.userPayload.sub);
   }
 
+  @Roles(UserRole.Admin, UserRole.User)
+  @UseGuards(AuthGuard)
   @Delete('/route/:timestamp')
   deleteRouteByTimestamp(@Request() req: ExpressRequest, @Param('timestamp') timestamp: string) {
     return this.usersService.deleteRouteByTimestamp(req.userPayload.sub, timestamp);
