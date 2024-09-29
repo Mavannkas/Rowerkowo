@@ -63,7 +63,7 @@ const fetchRouteData = async (): Promise<RouteResponse> => {
   if (additionalWaypoints && additionalWaypoints.length > 0) {
     const response = await axios.get<RouteResponse>('http://localhost:3011/directions/trip', {
       params: {
-        steps: [locationStore.start, ...additionalWaypoints, locationStore.end],
+        steps: [locationStore.start, ...additionalWaypoints, locationStore.end].join(','),
         mode: locationStore.mode
       }
     })
