@@ -145,6 +145,36 @@ const addNewWaypoint = () => {
   additionalWaypoints.value = [...additionalWaypoints.value, '']
 }
 
+const mappingData = [
+  {
+    value: 'sport',
+    condition:
+      (bikeOption.value === 'mountainBike' || bikeOption.value === 'roadBike') &&
+      rideOption.value === 'trainingRide' &&
+      !withChildren.value &&
+      !avoidNationalRoads.value
+  },
+  {
+    value: 'family',
+    condition:
+      bikeOption.value === 'cityBike' &&
+      (rideOption.value === 'recreationalRide' || rideOption.value === 'cityRide') &&
+      withChildren.value
+  }
+]
+
+const getMappedValue = () => {
+  for (let mapping of mappingData) {
+    if (mapping.condition) {
+      return mapping.value
+    }
+  }
+  return 'default'
+}
+
+const filterValue = getMappedValue()
+console.log(filterValue)
+
 const handleSearchForm = async () => {
   try {
     let startingPointData: { x: number; y: number } | undefined
@@ -176,7 +206,6 @@ const handleSearchForm = async () => {
     console.log(additionalWaypointsData)
     console.log(startingPointData)
     console.log(destinationData)
-    console.log('Kamil działaj :)')
 
     // TODO - Send data to backend
   } catch (error) {

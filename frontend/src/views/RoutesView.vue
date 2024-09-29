@@ -15,6 +15,10 @@
         }}</span>
       </div>
     </section>
+    <div v-if="!authStore.isLoggedIn" class="my-auto flex flex-col items-center justify-center">
+      <img class="h-16 w-16" src="/unauthorized.svg" alt="Ikona niezalogowany" />
+      <p class="text-center">Tylko zalogowani użytkownicy mogą dodawać trasy.</p>
+    </div>
     <div class="mt-auto flex flex-col gap-4" v-if="!authStore.user?.email">
       <RouterLink class="w-full" :to="ROUTING_URLS.LOGIN">
         <BaseButton class="w-full">Zaloguj się</BaseButton>
