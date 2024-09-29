@@ -8,6 +8,7 @@ export class AccidentsController {
 
   @Get()
   getAccidentsNearToRoad(@Query() query: AccidentsNearToRoadDto) {
+    console.log(`accidents: ${JSON.stringify(query)}`);
     return this.co2Service.getAccidentsNearRoad(query);
   }
 }

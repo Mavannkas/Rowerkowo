@@ -1,13 +1,28 @@
-FROM osrm/osrm-backend
+FROM ghcr.io/project-osrm/osrm-backend:v5.27.1
 
 WORKDIR /data
 
 COPY malopolskie-latest.osm.pbf ./
+COPY rower.lua ./
+COPY lib ./lib
 
-RUN osrm-extract -p /opt/bicycle.lua malopolskie-latest.osm.pbf
+RUN ls
+
+RUN apt-get update && apt-get install -y lua5.4 lua5.4-dev wget libssl-dev
+
+RUN apt install build-essential libreadline-dev unzip -y
+
+RUN wget https://luarocks.org/releases/luarocks-3.11.1.tar.gz
+RUN tar zxpf luarocks-3.11.1.tar.gz
+RUN cd luarocks-3.11.1 && ./configure && make && make install && luarocks install luasocket
+
+RUN luarocks install lua-resty-http
+
+
+RUN osrm-extract -p rower.lua malopolskie-latest.osm.pbf
 RUN osrm-partition malopolskie-latest.osrm
 RUN osrm-customize malopolskie-latest.osrm
 
 CMD osrm-routed --algorithm mld malopolskie-latest.osrm
 
-EXPOSE 5001
+EXPOSE 5000
