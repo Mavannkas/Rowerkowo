@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, Schema as MongooseSchema } from 'mongoose';
 
 export type RouteDocument = HydratedDocument<RouteEntity>;
 
@@ -27,11 +27,6 @@ export class RouteEntity implements Route {
   @Prop({
     required: true,
   })
-  route: any;
-
-  @Prop({
-    required: true,
-  })
   name: string
 
   @Prop({
@@ -53,6 +48,12 @@ export class RouteEntity implements Route {
     required: true,
   })
   finish: string;
+
+  @Prop({
+    required: true,
+    type: MongooseSchema.Types.Mixed,
+  })
+  route: Route;
 }
 
-export const RouteSchema = SchemaFactory.createForClass(AccidentEntity);
+export const RouteSchema = SchemaFactory.createForClass(RouteEntity);

@@ -16,7 +16,7 @@ export class RouteSharingController {
   @Roles(UserRole.Admin, UserRole.User)
   shareRoute(
     @Request() req: ExpressRequest,
-    @Body routeDto: RouteDto,
+    @Body() routeDto: RouteDto,
   ) {
     return this.routeSharingService.shareRoute(routeDto, req.userPayload);
   }
