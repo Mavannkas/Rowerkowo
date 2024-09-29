@@ -8,7 +8,6 @@ interface User {
 }
 
 export const useAuthStore = defineStore('auth', () => {
-  // Automatically handles JSON.stringify and JSON.parse
   const user = useLocalStorage<User | null>('user', null)
   const isLoggedIn = ref<boolean>(!!user.value)
 
@@ -18,19 +17,15 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   const login = (userData: User) => {
-    console.log('Logging in with:', userData)
-    user.value = userData // Will be automatically stringified and saved to local storage
+    user.value = userData
     isLoggedIn.value = true
-    console.log('Stored user:', user.value)
   }
 
   const logout = () => {
-    console.log('Logging out.')
     user.value = null
     isLoggedIn.value = false
   }
 
-  // Watch for any changes to `user` in localStorage
   watch(user, (newUser) => {
     console.log('User updated in localStorage:', newUser)
   })
