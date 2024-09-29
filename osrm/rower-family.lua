@@ -236,6 +236,7 @@ function process_segment(profile, segment)
   if segment.distance < 100 then
     return
   end
+  local curr_accidents = get_current_accidents(start_lat, start_lon, end_lat, end_lon)
   local co2 = get_co2(start_lat, start_lon, end_lat, end_lon)
   local accidents = get_accidents(start_lat, start_lon, end_lat, end_lon)
 
@@ -247,6 +248,11 @@ function process_segment(profile, segment)
     accidents=0.05
   end
 
+  if curr_accidents then
+    accidents=0.05
+  end
+
+  segment.weight = segment.weight / curr_accidents
   segment.weight = segment.weight / co2
   segment.weight = segment.weight / accidents
 
@@ -741,6 +747,38 @@ function get_accidents(start_latitude, start_longitude, end_latitude, end_longit
 
   -- local url = os.getenv("CO2_URL")
   url = 'http://localhost:3011/accidents'
+
+  local base_url = string.format(
+    "%s?startLatitude=%f&startLongitude=%f&endLatitude=%f&endLongitude=%f",
+    url, start_latitude, start_longitude, end_latitude, end_longitude
+  )
+
+  -- print("url ", base_url)
+
+  -- Make a GET request
+  local response_body = {}
+  local res, code, response_headers = http.request {
+    url = base_url,
+    method = "GET",
+    sink = ltn12.sink.table(response_body)
+  }
+
+  -- Check the response code and print the response
+  if res then
+    return table.concat(response_body)
+  else
+    return 1
+  end
+end
+
+function get_current_accidents(start_latitude, start_longitude, end_latitude, end_longitude)
+  -- get co2 penalty
+  -- the less is worse
+  local http = require("socket.http")
+  local ltn12 = require("ltn12")
+
+  -- local url = os.getenv("CO2_URL")
+  url = 'http://localhost:3011/current-accidents'
 
   local base_url = string.format(
     "%s?startLatitude=%f&startLongitude=%f&endLatitude=%f&endLongitude=%f",
