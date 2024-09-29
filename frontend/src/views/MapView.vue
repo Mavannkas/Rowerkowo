@@ -128,6 +128,24 @@ const fetchRouteData = async (): Promise<RouteResponse> => {
   const startCoordinates = `${startLng},${startLat}`
   const endCoordinates = `${endLng},${endLat}`
 
+  const additionalWaypoints = locationStore.mid
+
+  if (additionalWaypoints && additionalWaypoints.length > 0) {
+    const response = await axios.get<any>('http://localhost:3011/directions/trip', {
+      params: {
+        stops: [
+          startCoordinates,
+          ...additionalWaypoints.map((point) => `${point.x},${point.y}`),
+          endCoordinates
+        ].join(';'),
+        mode: locationStore.mode
+      }
+    })
+    return {
+      ...response.data,
+      routes: response.data?.trips
+    }
+  }
   const response = await axios.get<RouteResponse>('http://localhost:3011/directions', {
     params: {
       start: startCoordinates,
@@ -149,14 +167,18 @@ const routeCoordinates = computed(() => {
   if (!data.value || !data.value.routes || !data.value.routes.length) return []
 
   const steps = data.value.routes[0].legs[0].steps
-  let coordinates: { lat: number; lng: number }[] = []
+  let coordinates: { lat: number; lng: number; isWaypoint: boolean }[] = []
 
   steps.forEach((step) => {
     const decodedPath = polyline.decode(step.geometry)
     coordinates = coordinates.concat(
       decodedPath.map((point) => ({
         lat: point[0],
-        lng: point[1]
+        lng: point[1],
+        isWaypoint:
+          locationStore.mid?.some(
+            (midPoint) => midPoint.x === point[1] && midPoint.y === point[0]
+          ) || false
       }))
     )
   })

@@ -7,6 +7,7 @@ export type LocationSearchResult = { x: number; y: number }
 export const useLocationStore = defineStore('location', () => {
   const start = ref<LocationSearchResult>()
   const end = ref<LocationSearchResult>()
+  const mid = ref<LocationSearchResult[]>()
   const mode = ref<string>('')
   const startingPointNameRef = ref<string>('')
   const destinationPointNameRef = ref<string>('')
@@ -14,12 +15,14 @@ export const useLocationStore = defineStore('location', () => {
   const update = (
     newStart: LocationSearchResult,
     newEnd: LocationSearchResult,
+    additionalWaypointsData: LocationSearchResult[],
     newMode: string,
     startingPointName: string,
     destinationPointName: string
   ) => {
     start.value = newStart
     end.value = newEnd
+    mid.value = additionalWaypointsData
     mode.value = newMode
     startingPointNameRef.value = startingPointName
     destinationPointNameRef.value = destinationPointName
@@ -50,5 +53,5 @@ export const useLocationStore = defineStore('location', () => {
     }
   }
 
-  return { start, end, update, updateRoutes, mode, getSearchData }
+  return { start, end, update, updateRoutes, mode, getSearchData, mid }
 })

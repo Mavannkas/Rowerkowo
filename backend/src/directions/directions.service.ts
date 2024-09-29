@@ -10,8 +10,9 @@ export class DirectionsService {
   async findTrip(stops: string, mode?: RoutingMode): Promise<Direction> {
 
     let osrmUrl = this.createUrl(mode);
-
+    
     console.log(osrmUrl);
+    console.log(stops);
 
     const callUrl = `${osrmUrl}/trip/v1/driving/${stops}?overview=false&steps=true&annotations=distance,duration&source=first&destination=last`;
 

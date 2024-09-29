@@ -227,6 +227,7 @@ const handleSearchForm = async () => {
     locationStore.update(
       startingPointData,
       destinationData,
+      additionalWaypointsData,
       filterValue.value,
       startingPoint.value,
       destination.value
