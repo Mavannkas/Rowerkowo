@@ -8,7 +8,7 @@ import {
   UserWithoutPassword,
   userToUserWithoutPassword,
 } from './entities/user.entity';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { HashService } from 'src/helpers/hash.service';
 
 @Injectable()
@@ -71,7 +71,7 @@ export class UsersService {
     return {};
   }
 
-  async addRoute(id: string, directions: any) {
+  async addRoute(id: mongoose.Types.ObjectId, directions: any) {
     const time = new Date().toISOString();
     const { routeHistory } = await this.userModel.findById(id) as User
     const updateDto = {
@@ -81,7 +81,7 @@ export class UsersService {
     return userToUserWithoutPassword(user);
   }
 
-  async clearRouteHistory(id: string) {
+  async clearRouteHistory(id: mongoose.Types.ObjectId) {
     const updateDto = {
       routeHistory: []
     }
@@ -89,7 +89,7 @@ export class UsersService {
     return userToUserWithoutPassword(user);
   }
 
-  async deleteRouteByTimestamp(id: string, timestamp: string) {
+  async deleteRouteByTimestamp(id: mongoose.Types.ObjectId, timestamp: string) {
     const { routeHistory } = await this.userModel.findById(id) as User
     const updatedRouteHistory = routeHistory.filter(route => route.timeStamp !== timestamp)
     const updateDto = {

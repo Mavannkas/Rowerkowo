@@ -5,7 +5,6 @@ import { CurrentAccidentEntity } from './entities/current-accident';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CurrentAccidentDto } from './dto/AirQualityNearToRoad.dto';
-import { Accident } from 'src/accidentIndexer/entities/accident.entity';
 import {
   getDistanceFromLatLonInMeters,
   getSquare,

@@ -7,8 +7,11 @@ import {
   Param,
   Delete,
   HttpCode,
+  Request,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { Request as ExpressRequest } from 'express';
+
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -42,18 +45,18 @@ export class UsersController {
     return this.usersService.remove(id);
   }
 
-  @Post(':id/route')
-  addRoute(@Param('id') id: string, @Body() route: any) {
-    return this.usersService.addRoute(id, route);
+  @Post('/route')
+  addRoute(@Request() req: ExpressRequest, @Body() route: any) {
+    return this.usersService.addRoute(req.userPayload.sub, route);
   }
 
-  @Delete(':id/routes')
-  deleteRoutes(@Param('id') id: string) {
-    return this.usersService.clearRouteHistory(id);
+  @Delete('/routes')
+  deleteRoutes(@Request() req: ExpressRequest) {
+    return this.usersService.clearRouteHistory(req.userPayload.sub);
   }
 
-  @Delete(':id/route/:timestamp')
-  deleteRouteByTimestamp(@Param('id') id: string, @Param('timestamp') timestamp: string) {
-    return this.usersService.deleteRouteByTimestamp(id, timestamp);
+  @Delete('/route/:timestamp')
+  deleteRouteByTimestamp(@Request() req: ExpressRequest, @Param('timestamp') timestamp: string) {
+    return this.usersService.deleteRouteByTimestamp(req.userPayload.sub, timestamp);
   }
 }
